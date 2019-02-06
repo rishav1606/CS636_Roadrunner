@@ -2,13 +2,16 @@
     "search.exclude": {
         "**/node_modules": true,
         "**/bower_components": true,
-        "**/auto": true
+        "**/auto": true,
+        "**/*.class": true
     },
-    "java.dependency.packagePresentation": "hierarchical",
     "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
-    }
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.class": true
+    },
+    "java.dependency.packagePresentation": "hierarchical"
 }
