@@ -1,9 +1,9 @@
 /******************************************************************************
 
 Copyright (c) 2010, Cormac Flanagan (University of California, Santa Cruz)
-                    and Stephen Freund (Williams College) 
+                    and Stephen Freund (Williams College)
 
-All rights reserved.  
+All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -48,21 +48,21 @@ import acme.util.Assert;
  */
 public class DecorationFactory<T extends Decoratable> implements Serializable {
 
-	/** 
+	/**
 	 * Indicates whether multiple decorations can have the same name. If not
 	 * only a single decoration with that name is created.
 	 */
-	public static enum Type { SINGLE, MULTIPLE }; 
-	
+	public static enum Type { SINGLE, MULTIPLE };
+
 	protected int allocated;
-	
-	private HashMap<String,Decoration<T,?>> map = new HashMap<String,Decoration<T,?>>(); 
+
+	private HashMap<String,Decoration<T,?>> map = new HashMap<String,Decoration<T,?>>();
 
 	public DecorationFactory() {
 		allocated = 0;
 	}
 
-	/** 
+	/**
 	 * Create a new decoration
 	 * @param <V>  Type of values stored
 	 * @param decorationName  Name of decoration

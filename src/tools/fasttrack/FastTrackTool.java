@@ -234,7 +234,6 @@ public class FastTrackTool extends Tool implements BarrierListener<FTBarrierStat
 		}
 
 		super.create(event);
-
 	}
 
 	@Override

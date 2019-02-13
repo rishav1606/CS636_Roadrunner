@@ -18,7 +18,7 @@ In the following, I assume that the path to the RoadRunner directory is given by
 
     You might want to change the value of `-Xmx` and `availbleProcessors` in the `msetup` script depending on your system configuration.
 
-+ Run FastTrack with microbenchmarks: `javac test/Test.java; rrrun -tool=FT2 -noTidGC test.Test`
++ Run FastTrack with microbenchmarks: `javac test/Test.java; rrrun -tool=FT2 -field=FINE -array=FINE -noTidGC test.Test`
 
     It should be possible to create standalone examples like `test/Test.java` and run RoadRunner analyses on them.
 

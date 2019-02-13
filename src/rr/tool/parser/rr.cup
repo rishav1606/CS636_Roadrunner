@@ -1,7 +1,7 @@
 /******************************************************************************
 
 Copyright (c) 2010, Cormac Flanagan (University of California, Santa Cruz)
-                    and Stephen Freund (Williams College) 
+                    and Stephen Freund (Williams College)
 
 All rights reserved.  Revision $REV ($DATE)
 
@@ -63,35 +63,35 @@ parser code {:
 	public static Tool build(ToolLoader l, String chain, CommandLine c) throws Exception {
 		cl = c;
 		loader = l;
-		parser p = new parser(new Lexer(new StringReader(chain)));        
+		parser p = new parser(new Lexer(new StringReader(chain)));
 		T e = (T)p.parse().value;
 		e.prep();
 		return e.gen(last());
 	}
 
-    
+
     static protected Tool make(String name, Tool next) throws Exception {
 		Class c = loader.loadToolClass(name);
 		cl.addGroup(c.getSimpleName());
 		Tool tool = (Tool)c.getConstructor(String.class, Tool.class, CommandLine.class).newInstance(c.getName(), next, cl);
 		return tool;
-    	
+
     }
-    
+
     static protected Tool last() {
         return new LastTool("Last", null);
     }
 
-	
+
 	public void syntax_error(Symbol cur_token) {
 	       Assert.fail("Syntax Error on token '" + cur_token.value + "'");
 	}
-	
+
 	public void unrecovered_syntax_error(Symbol cur_token) {
 	       syntax_error(cur_token);
 	}
 
-	static abstract class T { 
+	static abstract class T {
 		public abstract Tool gen(Tool next) throws Exception;
 		public abstract void prep();
 	}
@@ -100,7 +100,7 @@ parser code {:
 		protected String id;
 		public Id(String id) {
 		  this.id = id;
-		} 
+		}
 		public void prep() {
 			prepTool(id);
 		}
@@ -114,12 +114,12 @@ parser code {:
 		public Seq(T x1, T x2) {
 		  this.x1 = x1;
 		  this.x2 = x2;
-		} 
+		}
 		public void prep() {
 			x1.prep();
 			x2.prep();
 		}
-		
+
 		public Tool gen(Tool next) throws Exception {
 			return x1.gen(x2.gen(next));
 		}
@@ -130,17 +130,17 @@ parser code {:
 		public Bar(T x1, T x2) {
 		  this.x1 = x1;
 		  this.x2 = x2;
-		} 
+		}
 		public void prep() {
 			x1.prep();
 			x2.prep();
 		}
-		
+
 		public Tool gen(Tool next) throws Exception {
 		   return new SplitTool("Split", x1.gen(last()), x2.gen(last()), next, cl) ;
 		}
 	}
-	
+
 
 :}
 
@@ -156,12 +156,12 @@ precedence left COLON;
 
 
 /* The grammar */
-ToolSpec      ::=	    ID:x	
-						    {: RESULT = new parser.Id(x); :} 
+ToolSpec      ::=	    ID:x
+						    {: RESULT = new parser.Id(x); :}
 				  |     OPAREN ToolSpec:cl CPAREN
-							{: RESULT = cl; :} 
+							{: RESULT = cl; :}
 				  |     ToolSpec:x1 COLON ToolSpec:x2
-							{: RESULT = new parser.Seq(x1, x2); :} 
+							{: RESULT = new parser.Seq(x1, x2); :}
 				  |     ToolSpec:x1 BAR ToolSpec:x2
-							{: RESULT = new parser.Bar(x1, x2); :} 
+							{: RESULT = new parser.Bar(x1, x2); :}
 				  ;
