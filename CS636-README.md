@@ -2,29 +2,29 @@
 
 This repository is a fork of the original RoadRunner implementation available at `https://github.com/stephenfreund/RoadRunner`.
 
-**NOTE**: This document *augments* instructions that are already provided by the unmodified RoadRunner framework. Check `README-RoadRunner.txt`, `INSTALL.txt`, and run `rrrun -help`.
+This document _augments_ instructions that are already provided by the unmodified RoadRunner framework. Check `RoadRunner-README.txt`, `INSTALL.txt`, and run `rrrun -help`.
 
 ## Invocation Examples
 
-RoadRunner currently supports only till Java 1.8.
+RoadRunner officially supports only till Java 1.8. I have not tested more recent Java versions, it is possible they work with RoadRunner.
 
-In the following, I assume that the path to the RoadRunner directory is given by $RR_HOME. All instructions are relative to `$RR_HOME`, i.e., `cd $RR_HOME`.
+In the following, I assume that the path to the RoadRunner directory is given by `$RR_HOME`. All instructions are relative to `$RR_HOME`, i.e., `cd $RR_HOME`.
 
-+ Build: `ant`
+- Build: `ant` or `ant build`
 
-+ Clean: `ant clean`
+- Clean: `ant clean`
 
-+ Export RoadRunner binary paths: `source msetup`. Do this once for every terminal invocation.
+- Export RoadRunner binary paths: `source msetup`. Do this once for every terminal invocation.
 
-    You might want to change the value of `-Xmx` and `availbleProcessors` in the `msetup` script depending on your system configuration.
+You might want to change the value of `-Xmx` and `availbleProcessors` in the `msetup` script depending on your system configuration.
 
-+ Run FastTrack with microbenchmarks: `javac test/Test.java; rrrun -tool=FT2 -field=FINE -array=FINE -noTidGC test.Test`
+- Run FastTrack with microbenchmarks: `javac test/Test.java; rrrun -tool=FT2 -field=FINE -array=FINE -noTidGC test.Test`
 
-    It should be possible to create standalone examples like `test/Test.java` and run RoadRunner analyses on them.
+I strongly recommend that you create your own examples like `test/Test.java` and run RoadRunner analyses on them.
 
 ## Benchmarks
 
-RoadRunner currently supports a subset of popular Java benchmarks like Java Grande and [DaCapo](http://dacapobench.org). The following benchmarks should work with RoadRunner.
+RoadRunner supports a subset of popular Java benchmarks like [Java Grande](https://ieeexplore.ieee.org/document/1592782) and [DaCapo](http://dacapobench.org). The following benchmarks should work with RoadRunner.
 
     avrora
     batik
@@ -38,7 +38,7 @@ RoadRunner currently supports a subset of popular Java benchmarks like Java Gran
     tomcat
     xalan
 
-+ Some examples on how to run RoadRunner analyses with DaCapo benchmark `avrora`:
+- Some examples on how to run RoadRunner analyses with DaCapo benchmark `avrora`:
 
         cd benchmarks/avrora
 
@@ -50,18 +50,17 @@ RoadRunner currently supports a subset of popular Java benchmarks like Java Gran
 
         rrrun -classpath=original.jar -tool=FT2 -array=FINE -field=FINE -noTidGC -noxml -availableProcessors=4 -benchmark=1 -warmup=0 Main -t 4 -s small
 
-+ Execute `avrora` with `java`:
+- Execute `avrora` with `java`:
 
         cd benchmarks/avrora
 
         java -javaagent:$RR_HOME/build/jar/rragent.jar -Xmx10g -Xbootclasspath/a:$RR_HOME/classes:$RR_HOME/jars/java-cup-11a.jar: rr.RRMain -classpath=$RR_HOME/benchmarks/avrora/original.jar -maxTid=14 -array=FINE -field=FINE -noTidGC -availableProcessors=4 -tool=FT2 -benchmark=1 -warmup=0 RRBench
 
-+ To execute `xalan` with `java`:
+- To execute `xalan` with `java`:
 
         cd benchmarks/xalan
 
         /usr/lib/jvm/java-8-openjdk-amd64/bin/java -javaagent:$RR_HOME/build/jar/rragent.jar -Xmx10g -Xbootclasspath/p:$RR_HOME/classes:$RR_HOME/jars/java-cup-11a.jar: rr.RRMain -classpath=$RR_HOME/benchmarks/xalan/original.jar -maxTid=14 -array=FINE -field=FINE -noTidGC -availableProcessors=4 -tool=FT2 -benchmark=1 -warmup=0 RRBench
-
 
 ## Browsing the Source
 

@@ -2,8 +2,10 @@ auto
 build
 classes
 docs
+.vscode
 
 benchmarks/avrora/scratch/*
+benchmarks/batik/scratch/*
 benchmarks/fop/scratch/*
 benchmarks/jython/scratch/*
 benchmarks/luindex/scratch/*

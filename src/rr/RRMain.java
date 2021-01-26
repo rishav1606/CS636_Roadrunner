@@ -222,6 +222,9 @@ public class RRMain {
 		cl.add(benchmarkOption);
 		cl.add(warmUpOption);
 
+		// CS636: New options group
+		cl.addGroup("CS636");
+
 		cl.addGroup("Instrumentor");
 		cl.add(noInstrumentOption);
 		cl.add(instrumentOption);

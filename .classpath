@@ -12,5 +12,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="benchmarks/avrora/original.jar"/>
 	<classpathentry kind="lib" path="benchmarks/batik/original.jar"/>
+	<classpathentry kind="lib" path="build/jar/rragent.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

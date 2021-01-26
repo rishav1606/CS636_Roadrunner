@@ -1,0 +1,269 @@
+swarnendu:~/iitk-workspace/cs636-roadrunner$ rrrun -help | more
+openjdk version "1.8.0_275"
+OpenJDK Runtime Environment (build 1.8.0_275-8u275-b01-0ubuntu1~20.04-b01)
+OpenJDK 64-Bit Server VM (build 25.275-b01, mixed mode)
+
+[premain: Installing RoadRunner Agent...][SB]: This is premain()
+
+[main: RoadRunner Agent Loaded.]
+[main: Running in FAST Mode]
+[SB]: [Ljava.lang.String;@7f31245a
+[RR: Creating Fresh Meta Data]
+##
+##
+## Environment Variables
+## ---------------------
+##   RR_MODE        either FAST or SLOW.  All asserts, logging, and debugging statements
+##                  should be nested inside a test ensuring that RR_MODE is SLOW.
+##   RR_META_DATA   The directory created on previous run by -dump from which to reload
+##                  cached metadata and instrumented class files.
+##
+##
+##
+## Usage
+## -----
+##     rrrun  <options>  MainClass/EventLog
+##
+## Standard Options
+## ----------------
+##  -args={String}                 STABLE     Read additional command-line options from the given file.  Can be used multiple
+##                                            times.
+##                                            Current Value: []
+##
+##  -d={String}                    STABLE     Turn on the given debugging key.  Messages printed by Util.debugf(key, ...)
+##                                            will only be printed if the key is turned on.
+##                                            Current Value: []
+##
+##  -quiet                         STABLE     Quiet mode.  Will not print debugging or logging messages.
+##                                            Current Value: false
+##
+##  -logDepth={Integer}            STABLE     Ignore log messages greater than this nesting depth.
+##                                            Current Value: 100
+##
+##  -logs={String}                 STABLE     The path to the directory where log files will be stored.
+##                                            Current Value: log
+##
+##  -out={String}                  STABLE     Log file name for Util.out.
+##                                            Current Value:
+##
+##  -err={String}                  STABLE     Log file name for Util.err.
+##                                            Current Value:
+##
+##  -maxYikes={Integer}            STABLE     Maximum number of each yikes message printed.
+##                                            Current Value: 5
+##
+##  -help                          STABLE     Print this message.
+##                                            Current Value: false
+##
+## General
+## -------
+##  -classpath={String}            STABLE     The class path used to load classes from the target program.
+##                                            Current Value: .
+##
+##  -toolpath={String}             STABLE     The class path used to find RoadRunner tools specified.
+##                                            Current Value:
+##                                            /home/swarnendu/iitk-workspace/cs636-r
+##                                            oadrunner/classes/rr/simple:/home/swarnendu/iitk-workspace/cs636-r
+##                                            oadrunner/classes/tools
+##
+##  -tool={String}                 STABLE     The tool chain to use.  Can be single tool, sequentially composed tools,
+##                                            parallel composed tools, or parenthesized chain.  Specified with full class
+##                                            names or abbrevations in rr.props files on the toolpath.  Examples:
+##                                              -tool=FT
+##                                              -tool=TL:V
+##                                             -tool=rrtools.fastrack.FastTrack
+##                                             -tool=FT|HB
+##                                              -tool=FT:(P|V)
+##                                            Current Value: rrtools.simple.EmptyTool
+##
+##  -tools                         STABLE     Print all known tools
+##                                            Current Value: false
+##
+##  -repository={String}           UNSTABLE   Classpath to search for a class if RoadRunner cannot find it during metadata
+##                                            loading with the standard delegation technique.
+##                                            Current Value:
+##
+## Benchmarking
+## ------------
+##  -benchmark={Integer}           UNSTABLE   Benchmark...
+##                                            Current Value: 0
+##
+##  -warmup={Integer}              UNSTABLE   Warm Up...
+##                                            Current Value: 3
+##
+## Instrumentor
+## ------------
+##  -noinst                        STABLE     Do not instrument any class files.
+##                                            Current Value: false
+##
+##  -inst={InstrumentationMode}    STABLE     One of [INST, REP, NOINST].  Instrument mode: INST for instrument; NOINST for
+##                                            no instrument; REP for build repository
+##                                            Current Value: INST
+##
+##  -noFP                          STABLE     Do not use in-lined tool fastpath code for reads/writes.
+##                                            Current Value: false
+##
+##  -classes={StringMatcher}       STABLE     Specifies classes to instrument.  The default is all but standard libs.  Uses
+##                                            the StringMatcher scheme.  Examples:
+##                                              -classes="-.*cow.*" ignores classes with cow in name.
+##                                              -classes="+.*moo.*" -classes="-.*cow.*" ignores classes with cow in name,
+##                                            except if they have moo in the name
+##                                            Current Value: ["-java..*", "-javax..*", "-com.sun..*", "-sun..*", "-rr..*",
+##                                            "-tools..*", "-acme..*", "-.*__\$rr_.*", "-org.xml..*", default=ACCEPT]
+##
+##  -fields={StringMatcher}        STABLE     Specifies which fields to instrument.  The default is all.
+##                                            Current Value: ["-.*this\$.*", "-$.*__\$rr.*", default=ACCEPT]
+##
+##  -methods={StringMatcher}       STABLE     Specifies which methods to instrument.  The default is all.
+##                                            Current Value: [default=ACCEPT]
+##
+##  -lines={StringMatcher}         STABLE     Specifies which lines to instrument (only affects field/array operations).  The
+##                                            default is all.  (Form is 'test/Test.java:48')
+##                                            Current Value: [default=ACCEPT]
+##
+##  -shadowThread={StringMatcher}  DEPRECATED Specifies which methods can be tranformed into version that take a ShadowThread
+##                                            parameter.  No longer used --- JVMs have faster direct access to thread local
+##                                            data than before.
+##                                            Current Value: ["-.*", default=ACCEPT]
+##
+##  -noop={StringMatcher}          STABLE     Specifies which void methods should be replaced with a no op.  Useful for
+##                                            ignoring methods that check access via stack inspection.
+##                                            Current Value: [default=ACCEPT]
+##
+##  -values                        UNSTABLE   Pass tools.internal/new values for writes to tools.  Tools can then change the
+##                                            new value to be written.  You MUST run java with -noverify if you use -values
+##                                            in conjunction with array instrumentation.
+##                                            Current Value: false
+##
+##  -noConstructor                 STABLE     Turn off instrumentation of constructors and class initializers.
+##                                            Current Value: false
+##
+##  -noClone                       STABLE     turn off special handling of clone
+##                                            Current Value: false
+##
+##  -noEnter                       STABLE     Do not generate Enter and Exit events.
+##                                            Current Value: false
+##
+##  -noShutdownHook                UNSTABLE   Don't register shutdown hook.
+##                                            Current Value: false
+##
+##  -dump={String}                 STABLE     Specifies to directory to which all metadata and instrumented class files
+##                                            should be dumped.  Empty string turns off dumping.
+##                                            Current Value:
+##
+##  -sanity                        UNSTABLE   Check whether uninstrumented classes contain synchronization operations that
+##                                            will be ignored.
+##                                            Current Value: false
+##
+##  -fancy                         UNSTABLE   Use a more complex instrumentor with some untested or experimental features.
+##                                            The fancy version may yield faster code.
+##                                            Current Value: false
+##
+##  -verify                        UNSTABLE   Verify the instrumented class files.  (Used to debug instrumentor.)
+##                                            Current Value: false
+##
+##  -arraySites                    STABLE     Track arrays only on given line locations.
+##                                            Current Value: false
+##
+##  -trackReflection               UNSTABLE   Instrument calls to reflection methods that access fields/arrays to generate
+##                                            events.
+##                                            Current Value: false
+##
+##  -noDecInline                   UNSTABLE   Turn off Thread State Decoration Inlining.
+##                                            Current Value: false
+##
+## Monitor
+## -------
+##  -xml={String}                  STABLE     Log file name for the xml summary printed at the end of the run.
+##                                            Current Value: log.xml
+##
+##  -noxml                         STABLE     Turn off printing the xml summary at the end of the run.
+##                                            Current Value: false
+##
+##  -stacks                        STABLE     Record stack traces for printing in erros messages.  Stacks are expensive to
+##                                            compute, so by default RoadRunner doesn't (See ShadowThread.java).
+##                                            Current Value: false
+##
+##  -pulse={String}                UNSTABLE   Install periodic tasks (stacks,stats,counts).  Example: -pulse=stacks:counts
+##                                            Current Value:
+##
+##  -noTidGC                       UNSTABLE   Do not reuse the tid for a thread that has completed.
+##                                            Current Value: false
+##
+##  -nojoin                        UNSTABLE   By default RoadRunner waits for a thread to finishin by joining on it.  This
+##                                            causes problems if the target wait()'s on a Thread object, as is the case in
+##                                            Eclipse.  This option turns on a less efficient polling scheme.
+##                                            Current Value: false
+##
+##  -indices={Integer}             UNSTABLE   Specifies max array index to watch
+##                                            Current Value: 2147483647
+##
+##  -multiLoader                   UNSTABLE   Attempt to support multiple class loaders.
+##                                            Current Value: false
+##
+##  -constantGC                    UNSTABLE   Turn on constant garbage collection.
+##                                            Current Value: false
+##
+##  -updaters={UpdateMode}         UNSTABLE   One of [SAFE, UNSAFE, CAS].  Specify whether to use synchronized (safe) or
+##                                            unsynchronized (unsafe) updates to shadow locations.  You should leave this as
+##                                            SAFE unless there is a compelling argument why it is not needed. Unsynchronized
+##                                            are faster may cause subtle issues because of the JMM. CAS is EXPERIMENTAL ---
+##                                            use at your own risk (see CASFieldUpdater.java)
+##                                            Current Value: SAFE
+##
+##  -array={ArrayMode}             STABLE     One of [NONE, FINE, COARSE, SPECIAL, USER].  Determine the granularity of array
+##                                            shadow memory.
+##                                               NONE tracks no array info.
+##                                               FINE uses one location per index.
+##                                               COARSE uses one location per array
+##                                               SPECIAL can change from COARSE to FINE if tool requests it.
+##                                            Current Value: FINE
+##
+##  -field={FieldMode}             STABLE     One of [FINE, COARSE].  Specify granularity of shadow for objects.  FINE is one
+##                                            location per field.  COARSE is one location per object.
+##                                            Current Value: FINE
+##
+##  -nobarrier                     STABLE     Do not monitor barrier calls, even if monitor is installed.
+##                                            Current Value: false
+##
+##  -noEventReuse                  UNSTABLE   Turn of Event Reuse.
+##                                            Current Value: false
+##
+##  -arrayCacheType={CacheType}    UNSTABLE   One of [NONE, ORIG, WEAK, STRONG].  Set array shadow cache type.
+##                                            Current Value: STRONG
+##
+##  -infThreads={Integer}          UNSTABLE   Number of threads that loop forever.
+##                                            Current Value: 0
+##
+##  -callSites                     UNSTABLE   Track Call Site Info.
+##                                            Current Value: false
+##
+##  -trackMemoryUsage              UNSTABLE   Install monitors on GC to track Memory Usage
+##                                            Current Value: false
+##
+## Limits
+## ------
+##  -maxTime={Integer}             STABLE     Maximum execution time in seconds.
+##                                            Current Value: 0
+##
+##  -maxMem={Long}                 STABLE     Maximum memory in MB.
+##                                            Current Value: 10240
+##
+##  -maxTid={Integer}              STABLE     Maximum number of active threads.
+##                                            Current Value: 16
+##
+##  -availableProcessors={Integer} UNSTABLE   Number of procs RR says the machine has.
+##                                            Current Value: 8
+##
+##  -maxWarn={Integer}             STABLE     Maximum number of warnings of each type that will be printed for a specific
+##                                            declaration/operation.
+##                                            Current Value: 100
+##
+##
+[RR: Exiting: 0]
+OpenJDK 64-Bit Server VM (25.275-b01) for linux-amd64 JRE (1.8.0_275-8u275-b01-0ubuntu1~20.04-b01), built on Nov  9 2020 02:38:
+58 by "buildd" with gcc 9.3.0
+Memory: 4k page, physical 16291396k(4175392k free), swap 31250428k(31249136k free)
+CommandLine flags: -XX:InitialHeapSize=1073741824 -XX:MaxHeapSize=3221225472 -XX:+PrintGC -XX:+PrintGCTimeStamps -XX:+UseCompre
+ssedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC
+swarnendu:~/iitk-workspace/cs636-roadrunner$

@@ -1,12 +1,12 @@
 # Copyright (c) 2010, Cormac Flanagan (University of California, Santa Cruz)
-#                     and Stephen Freund (Williams College) 
+#                     and Stephen Freund (Williams College)
 #
-# All rights reserved.  
-# 
+# All rights reserved.
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 #    * Redistributions of source code must retain the above copyright
 #      notice, this list of conditions and the following disclaimer.
 #
@@ -43,30 +43,29 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 #export JVM_ARGS="-Xmx${GIGS}g -Xms1g"
 export JVM_ARGS="-Xmx3g -Xms1g -Xloggc:/dev/stdout"
 
-
-export PATH=${PATH}:`pwd`/auto/bin:`pwd`/bin
+export PATH=${PATH}:$(pwd)/auto/bin:$(pwd)/bin
 
 export RR_MODE=FAST
-export RR_HOME=`pwd`
-export RR_TOOLPATH=`pwd`/classes/rr/simple:`pwd`/classes/tools
+export RR_HOME=$(pwd)
+export RR_TOOLPATH=$(pwd)/classes/rr/simple:$(pwd)/classes/tools
 
 echo "RR Setup"
 echo "================================================"
 echo
 echo "JAVA_HOME   =  " $JAVA_HOME
 echo "JVM_ARGS    =  " $JVM_ARGS
-echo "rrrun       -> " `which rrrun`
+echo "rrrun       -> " $(which rrrun)
 echo "RR_HOME     =  " $RR_HOME
+echo "RR_MODE     =  " $RR_MODE
 echo "RR_TOOLPATH =  " $RR_TOOLPATH
 echo
 echo "================================================"
-
 
 echo "Available Processors"
 echo "================================================"
 echo ""
 javac test/Proc.java
-export AVAIL_PROCS=`java test/Proc`
+export AVAIL_PROCS=$(java test/Proc)
 echo "Runtime.getRuntime().availableProcessors() returned ${AVAIL_PROCS}"
 echo ""
 echo "================================================"
