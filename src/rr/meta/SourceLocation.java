@@ -43,7 +43,7 @@ public class SourceLocation implements Serializable, Comparable<SourceLocation> 
 	protected final int line;
 	protected final int offset;
 
-	// SB: Added method info from Vindicator project
+	// CS636: Added method info from Vindicator project
 	public SourceLocation(String file, MethodInfo method, int line, int offset) {
 		this.file = file;
 		this.method = method;

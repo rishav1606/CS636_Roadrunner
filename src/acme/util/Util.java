@@ -71,7 +71,7 @@ public class Util {
 			false, CommandLineOption.Kind.STABLE,
 			"Quiet mode.  Will not print debugging or logging messages.");
 
-	// SB: TODO: What does nesting depth mean?
+	// CS636: TODO: What does nesting depth mean?
 	public static CommandLineOption<Integer> logDepthOption = CommandLine.makeInteger("logDepth",
 			100, CommandLineOption.Kind.STABLE,
 			"Ignore log messages greater than this nesting depth.");

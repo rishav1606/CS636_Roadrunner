@@ -55,7 +55,7 @@ for i in `ls auto/tools/fasttrack_long/*.java`; do
     cat tmp.java >> $i
 done
 
-# SB: Clean cruft
+# CS636: Clean cruft
 rm tmp.java
 rm auto/tools/fasttrack_long/*.bak
 

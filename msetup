@@ -32,7 +32,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# SB: I changed a few exports to work on GNU/Linux systems
+# CS636: Changed a few exports to work on GNU/Linux systems
 # Must be a 1.7 or later VM
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home/
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64

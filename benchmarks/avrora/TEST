@@ -36,7 +36,7 @@
 #
 
 TARGET="Main"
-# SB: Pass benchmark specific parameters here
+# CS636: Pass benchmark specific parameters here
 PROGRAM_ARGS="-s small"
 
 echo "PREP"

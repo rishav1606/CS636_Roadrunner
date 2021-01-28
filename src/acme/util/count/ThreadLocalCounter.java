@@ -56,7 +56,7 @@ final public class ThreadLocalCounter extends AbstractCounter {
 		counts[tid << 3] += n;
 	}
 	
-	// SB: Added from WDC
+	// CS36: Added from WDC
 	public long getLocal(int tid) {
 		return counts[tid << 3];
 	}

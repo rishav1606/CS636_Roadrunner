@@ -142,7 +142,7 @@ public class WeakIdentityHashMap<K, V> {
      * @author Benjamin Wood
      *
      * @param <T>
-     *            the type of the argument to the apply method.
+     *                the type of the argument to the apply method.
      */
     public static interface ValueFunction<T> {
         public void apply(T v);
@@ -248,7 +248,7 @@ public class WeakIdentityHashMap<K, V> {
         table = new Entry[DEFAULT_INITIAL_CAPACITY];
     }
 
-    // SB: Added this from Vindicator
+    // CS636: Added this from Vindicator
     public WeakIdentityHashMap(int initialCapacity, WeakIdentityHashMap mapToCopy) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
         // Copy non-null entries from mapToCopy to new map

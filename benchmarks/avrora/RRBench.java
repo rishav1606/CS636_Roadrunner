@@ -1,4 +1,3 @@
-
 /******************************************************************************
  *
  * Copyright (c) 2016, Cormac Flanagan (University of California, Santa Cruz) and Stephen Freund
@@ -36,9 +35,6 @@ public class RRBench {
 	private final String[] args;
 
 	public static void main(String args[]) throws Exception {
-		System.out.println("[SB]: " + args);
-		System.exit(0);
-
 		RRBench bench = new RRBench(args);
 		bench.preIteration();
 		bench.iterate();

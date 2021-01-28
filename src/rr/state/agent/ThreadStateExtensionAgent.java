@@ -57,6 +57,7 @@ public class ThreadStateExtensionAgent {
 		INST, REP, NOINST
 	};
 
+	// CS636: TODO:
 	private static final String FIELD_ACCESSOR_NAME_PREFIX = "ts_get";
 
 	static private final StateExtensionTransformer trans = new StateExtensionTransformer();
@@ -65,10 +66,8 @@ public class ThreadStateExtensionAgent {
 			"noDecInline", false, CommandLineOption.Kind.EXPERIMENTAL,
 			"Turn off Thread State Decoration Inlining.");
 
-	// SB: TODO: Where is this method called from?
+	// CS636: TODO: Where is this method called from?
 	public static void premain(String agentArgs, Instrumentation inst) {
-		System.out.println("[SB]: This is premain()");
-
 		System.err.println("[premain: Installing RoadRunner Agent...]");
 		inst.addTransformer(trans);
 		Util.log("RoadRunner Agent Loaded.");

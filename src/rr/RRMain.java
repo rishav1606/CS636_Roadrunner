@@ -187,9 +187,6 @@ public class RRMain {
 	}
 
 	public static int processArgs(String argv[]) {
-
-		System.out.println("[SB]: " + argv);
-
 		final CommandLine cl = new CommandLine("rrrun", "MainClass/EventLog");
 
 		cl.add(new CommandLineOption<Boolean>("help", false, false, CommandLineOption.Kind.STABLE,
@@ -381,7 +378,6 @@ public class RRMain {
 		Util.log(new TimedStmt("Running target") {
 			@Override
 			public void run() throws Exception {
-				System.out.println("[SB]: runNormally() " + className);
 				runTargetMain(className, newArgv);
 				waitForAllThreads();
 			}

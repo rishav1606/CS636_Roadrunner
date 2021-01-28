@@ -32,7 +32,9 @@
 
 package tools.old.fasttrack_cas;
 
+import acme.util.Util;
 import acme.util.Yikes;
+import rr.state.ShadowThread;
 import rr.state.ShadowVar;
 import sun.misc.Unsafe;
 import tools.old.util.CV;

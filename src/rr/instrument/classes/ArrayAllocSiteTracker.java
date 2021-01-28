@@ -83,6 +83,7 @@ public class ArrayAllocSiteTracker extends RRClassAdapter {
 		}
 
 		public void newArray() {
+            // CS636: Added method name
 			final SourceLocation loc = new SourceLocation(this.getFileName(), this.getMethod(), this.getFileLine(), this.getByteCodeIndex());
 			if (ArrayStateFactory.arrayOption.get() != ArrayStateFactory.ArrayMode.NONE && ArrayFilterTool.arrayAllocsToWatch.get().test(loc.getKey()) == StringMatchResult.ACCEPT) {
 				super.visitInsn(Opcodes.DUP);

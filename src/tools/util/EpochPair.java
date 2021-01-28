@@ -32,6 +32,8 @@
 
 package tools.util;
 
+import rr.state.ShadowThread;
+
 /*
  * A pair of epochs encoded as a long.
  */
