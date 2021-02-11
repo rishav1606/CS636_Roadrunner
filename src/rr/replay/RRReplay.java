@@ -1,24 +1,24 @@
 /******************************************************************************
- * 
+ *
  * Copyright (c) 2010, Cormac Flanagan (University of California, Santa Cruz) and Stephen Freund
  * (Williams College)
- * 
+ *
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice, this list of conditions
  * and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright notice, this list of conditions
  * and the following disclaimer in the documentation and/or other materials provided with the
  * distribution.
- * 
+ *
  * Neither the names of the University of California, Santa Cruz and Williams College nor the names
  * of its contributors may be used to endorse or promote products derived from this software without
  * specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -27,7 +27,7 @@
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  ******************************************************************************/
 
 package rr.replay;
@@ -127,7 +127,8 @@ public class RRReplay implements MetaDataInfoVisitor {
 	public synchronized void go() {
 		try {
 			RR.startTimer();
-			boolean trackArrays = ArrayStateFactory.arrayOption.get() != ArrayStateFactory.ArrayMode.NONE;
+			boolean trackArrays = ArrayStateFactory.arrayOption
+					.get() != ArrayStateFactory.ArrayMode.NONE;
 			while (true) {
 				EventEnum event = EventEnum.values()[in.readInt()];
 				eventCount++;
@@ -151,36 +152,43 @@ public class RRReplay implements MetaDataInfoVisitor {
 						int target = in.readInt();
 						switch (kind) {
 							case VOLATILE: {
-								FieldAccessInfo fad = MetaDataInfoMaps.getFieldAccesses().get(accessKey);
+								FieldAccessInfo fad = MetaDataInfoMaps.getFieldAccesses()
+										.get(accessKey);
 								Assert.assertTrue(fad != null, "Bad MetaData");
 								final Object obj = object(target);
 								final ShadowVar state = fad.getField().getUpdater().getState(obj);
 								if (fad.isWrite()) {
 									if (doIt)
-										RREventGenerator.volatileWriteAccess(obj, state, fad.getId(), thread(thread));
+										RREventGenerator.volatileWriteAccess(obj, state,
+												fad.getId(), thread(thread));
 								} else {
 									if (doIt)
-										RREventGenerator.volatileReadAccess(obj, state, fad.getId(), thread(thread));
+										RREventGenerator.volatileReadAccess(obj, state, fad.getId(),
+												thread(thread));
 								}
 								break;
 							}
 							case FIELD: {
-								FieldAccessInfo fad = MetaDataInfoMaps.getFieldAccesses().get(accessKey);
+								FieldAccessInfo fad = MetaDataInfoMaps.getFieldAccesses()
+										.get(accessKey);
 								Assert.assertTrue(fad != null, "Bad MetaData");
 								final Object obj = object(target);
 								final ShadowVar state = fad.getField().getUpdater().getState(obj);
 								if (fad.isWrite()) {
 									if (doIt) {
-										RREventGenerator.writeAccess(obj, state, fad.getId(), thread(thread));
+										RREventGenerator.writeAccess(obj, state, fad.getId(),
+												thread(thread));
 									}
 								} else {
 									if (doIt)
-										RREventGenerator.readAccess(obj, state, fad.getId(), thread(thread));
+										RREventGenerator.readAccess(obj, state, fad.getId(),
+												thread(thread));
 								}
 								break;
 							}
 							case ARRAY: {
-								ArrayAccessInfo fad = MetaDataInfoMaps.getArrayAccesses().get(accessKey);
+								ArrayAccessInfo fad = MetaDataInfoMaps.getArrayAccesses()
+										.get(accessKey);
 								int index = in.readInt();
 								if (!trackArrays) {
 									break;
@@ -188,12 +196,12 @@ public class RRReplay implements MetaDataInfoVisitor {
 								Assert.assertTrue(fad != null, "Bad MetaData for " + accessKey);
 								if (fad.isWrite()) {
 									if (doIt)
-										RREventGenerator.arrayWrite(array(target), index, fad.getId(), thread(thread),
-												array(target));
+										RREventGenerator.arrayWrite(array(target), index,
+												fad.getId(), thread(thread), array(target));
 								} else {
 									if (doIt)
-										RREventGenerator.arrayRead(array(target), index, fad.getId(), thread(thread),
-												array(target));
+										RREventGenerator.arrayRead(array(target), index,
+												fad.getId(), thread(thread), array(target));
 								}
 								break;
 							}
@@ -304,8 +312,8 @@ public class RRReplay implements MetaDataInfoVisitor {
 						int barrier = in.readInt();
 						int parties = in.readInt();
 						if (doIt)
-							SpecialMethods.invoke("ReplayBarrier.await()V", true, barrier(barrier, parties),
-									thread(td));
+							SpecialMethods.invoke("ReplayBarrier.await()V", true,
+									barrier(barrier, parties), thread(td));
 						break;
 					}
 					case POSTBARRIER: {
@@ -313,8 +321,8 @@ public class RRReplay implements MetaDataInfoVisitor {
 						int barrier = in.readInt();
 						int parties = in.readInt();
 						if (doIt)
-							SpecialMethods.invoke("ReplayBarrier.await()V", false, barrier(barrier, parties),
-									thread(td));
+							SpecialMethods.invoke("ReplayBarrier.await()V", false,
+									barrier(barrier, parties), thread(td));
 						break;
 					}
 

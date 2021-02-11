@@ -1,5 +1,5 @@
 /******************************************************************************
- * 
+ *
  * Copyright (c) 2010, Cormac Flanagan (University of California, Santa Cruz) and Stephen Freund
  * (Williams College)
  * 
