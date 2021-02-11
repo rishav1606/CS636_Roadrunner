@@ -49,65 +49,65 @@ import tools.util.LockSet;
 @Abbrev("PL")
 public final class ProtectingLockTool extends Tool {
 
-	static Decoration<ShadowLock, ShadowVar> shadowLock = ShadowLock.decoratorFactory.make(
-			"Eraser:lock", DecorationFactory.Type.MULTIPLE,
-			new DefaultValue<ShadowLock, ShadowVar>() {
-				public ShadowVar get(ShadowLock ld) {
-					return null;
-				}
-			});
+    static Decoration<ShadowLock, ShadowVar> shadowLock = ShadowLock.decoratorFactory.make(
+            "Eraser:lock", DecorationFactory.Type.MULTIPLE,
+            new DefaultValue<ShadowLock, ShadowVar>() {
+                public ShadowVar get(ShadowLock ld) {
+                    return null;
+                }
+            });
 
-	protected ShadowVar get(ShadowLock td) {
-		return shadowLock.get(td);
-	}
+    protected ShadowVar get(ShadowLock td) {
+        return shadowLock.get(td);
+    }
 
-	protected void set(ShadowLock td, ShadowVar gs) {
-		shadowLock.set(td, gs);
-	}
+    protected void set(ShadowLock td, ShadowVar gs) {
+        shadowLock.set(td, gs);
+    }
 
-	public ProtectingLockTool(String name, Tool next, CommandLine commandLine) {
-		super(name, next, commandLine);
-	}
+    public ProtectingLockTool(String name, Tool next, CommandLine commandLine) {
+        super(name, next, commandLine);
+    }
 
-	@Override
-	public void acquire(AcquireEvent ae) {
-		if (!protectedAfterAccess(ae.getThread(), ae.getLock(), true)) {
-			super.acquire(ae);
-		}
-	}
+    @Override
+    public void acquire(AcquireEvent ae) {
+        if (!protectedAfterAccess(ae.getThread(), ae.getLock(), true)) {
+            super.acquire(ae);
+        }
+    }
 
-	@Override
-	public void release(ReleaseEvent re) {
-		if (!protectedAfterAccess(re.getThread(), re.getLock(), false)) {
-			super.release(re);
-		}
-	}
+    @Override
+    public void release(ReleaseEvent re) {
+        if (!protectedAfterAccess(re.getThread(), re.getLock(), false)) {
+            super.release(re);
+        }
+    }
 
-	protected boolean protectedAfterAccess(ShadowThread currentThread, ShadowLock ld,
-			boolean isAcquire) {
-		ShadowVar gs = get(ld);
+    protected boolean protectedAfterAccess(ShadowThread currentThread, ShadowLock ld,
+            boolean isAcquire) {
+        ShadowVar gs = get(ld);
 
-		if (gs == null) {
-			set(ld, currentThread);
-			return true;
-		}
+        if (gs == null) {
+            set(ld, currentThread);
+            return true;
+        }
 
-		if (gs == currentThread) {
-			return true;
-		} else if (gs instanceof ShadowThread) {
-			set(ld, gs = LockSetTool.ts_get_lset(currentThread));
-		}
+        if (gs == currentThread) {
+            return true;
+        } else if (gs instanceof ShadowThread) {
+            set(ld, gs = LockSetTool.ts_get_lset(currentThread));
+        }
 
-		if (gs instanceof LockSet) {
-			LockSet ls = (LockSet) gs;
-			ls = LockSet.intersect(ls, LockSetTool.ts_get_lset(currentThread));
-			set(ld, gs = ls);
-			if (gs != LockSet.emptySet()) {
-				return true;
-			} else {
-				gs = LastTool.getLastGuardState();
-			}
-		}
-		return false;
-	}
+        if (gs instanceof LockSet) {
+            LockSet ls = (LockSet) gs;
+            ls = LockSet.intersect(ls, LockSetTool.ts_get_lset(currentThread));
+            set(ld, gs = ls);
+            if (gs != LockSet.emptySet()) {
+                return true;
+            } else {
+                gs = LastTool.getLastGuardState();
+            }
+        }
+        return false;
+    }
 }

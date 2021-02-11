@@ -38,50 +38,50 @@ import acme.util.count.Counter;
 
 public final class SpecializingArrayState extends AbstractArrayState {
 
-	private static Counter count = new Counter("Array", "Specialize Ops");
+    private static Counter count = new Counter("Array", "Specialize Ops");
 
-	protected AbstractArrayState delegate;
-	protected boolean specialized;
+    protected AbstractArrayState delegate;
+    protected boolean specialized;
 
-	public SpecializingArrayState(Object array) {
-		super(array);
-		delegate = new CoarseArrayState(array);
-	}
+    public SpecializingArrayState(Object array) {
+        super(array);
+        delegate = new CoarseArrayState(array);
+    }
 
-	@Override
-	public synchronized void specialize() {
-		if (!specialized) {
-			count.inc();
-			Object target = this.getArray();
-			Assert.assertTrue(target != null);
-			Util.logf("Specializing array %s", Util.objectToIdentityString(target));
-			ShadowVar orig = delegate.getState(0);
-			delegate = new FineArrayState(target);
-			for (int i = 0; i < lengthOf(target); i++) {
-				delegate.putState(i, null, orig);
-			}
-			specialized = true;
-		}
-	}
+    @Override
+    public synchronized void specialize() {
+        if (!specialized) {
+            count.inc();
+            Object target = this.getArray();
+            Assert.assertTrue(target != null);
+            Util.logf("Specializing array %s", Util.objectToIdentityString(target));
+            ShadowVar orig = delegate.getState(0);
+            delegate = new FineArrayState(target);
+            for (int i = 0; i < lengthOf(target); i++) {
+                delegate.putState(i, null, orig);
+            }
+            specialized = true;
+        }
+    }
 
-	@Override
-	public AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i) {
-		return delegate.getShadowForNextDim(td, element, i);
-	}
+    @Override
+    public AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i) {
+        return delegate.getShadowForNextDim(td, element, i);
+    }
 
-	@Override
-	public void setShadowForNextDim(int i, AbstractArrayState s) {
-		delegate.setShadowForNextDim(i, s);
-	}
+    @Override
+    public void setShadowForNextDim(int i, AbstractArrayState s) {
+        delegate.setShadowForNextDim(i, s);
+    }
 
-	@Override
-	public final ShadowVar getState(int index) {
-		return delegate.getState(index);
-	}
+    @Override
+    public final ShadowVar getState(int index) {
+        return delegate.getState(index);
+    }
 
-	@Override
-	public final boolean putState(int index, ShadowVar expected, ShadowVar v) {
-		return delegate.putState(index, expected, v);
-	}
+    @Override
+    public final boolean putState(int index, ShadowVar expected, ShadowVar v) {
+        return delegate.putState(index, expected, v);
+    }
 
 }

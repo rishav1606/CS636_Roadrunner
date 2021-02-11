@@ -55,36 +55,36 @@ import javax.tools.Diagnostic;
 @SupportedAnnotationTypes({ "rr.annotations.Abbrev" })
 public class BuildToolList extends AbstractProcessor {
 
-	private static final String RRTOOLS_PROPERTIES = "rrtools.properties";
+    private static final String RRTOOLS_PROPERTIES = "rrtools.properties";
 
-	@Override
-	public SourceVersion getSupportedSourceVersion() {
-		return SourceVersion.latestSupported();
-	}
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latestSupported();
+    }
 
-	private Messager messager;
+    private Messager messager;
 
-	@Override
-	public synchronized void init(ProcessingEnvironment processingEnv) {
-		super.init(processingEnv);
-		messager = processingEnv.getMessager();
-	}
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+        messager = processingEnv.getMessager();
+    }
 
-	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
-		try {
-			PrintWriter out = new PrintWriter(new FileWriter(RRTOOLS_PROPERTIES, true));
-			for (Element e : env.getElementsAnnotatedWith(Abbrev.class)) {
-				TypeElement te = (TypeElement) e;
-				Abbrev a = te.getAnnotation(Abbrev.class);
-				if (a != null) {
-					out.println(a.value() + "=" + te.getQualifiedName());
-				}
-			}
-			out.close();
-		} catch (IOException err) {
-			messager.printMessage(Diagnostic.Kind.ERROR,
-					String.format("Error writing to file %s", RRTOOLS_PROPERTIES));
-		}
-		return true;
-	}
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
+        try {
+            PrintWriter out = new PrintWriter(new FileWriter(RRTOOLS_PROPERTIES, true));
+            for (Element e : env.getElementsAnnotatedWith(Abbrev.class)) {
+                TypeElement te = (TypeElement) e;
+                Abbrev a = te.getAnnotation(Abbrev.class);
+                if (a != null) {
+                    out.println(a.value() + "=" + te.getQualifiedName());
+                }
+            }
+            out.close();
+        } catch (IOException err) {
+            messager.printMessage(Diagnostic.Kind.ERROR,
+                    String.format("Error writing to file %s", RRTOOLS_PROPERTIES));
+        }
+        return true;
+    }
 }

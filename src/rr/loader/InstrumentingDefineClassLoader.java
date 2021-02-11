@@ -16,66 +16,66 @@ import rr.state.agent.DefineClassListener;
 
 public class InstrumentingDefineClassLoader implements DefineClassListener {
 
-	public static CommandLineOption<Boolean> sanityOption = CommandLine.makeBoolean("sanity", false,
-			CommandLineOption.Kind.EXPERIMENTAL,
-			"Check whether uninstrumented classes contain synchronization operations that will be ignored.");
+    public static CommandLineOption<Boolean> sanityOption = CommandLine.makeBoolean("sanity", false,
+            CommandLineOption.Kind.EXPERIMENTAL,
+            "Check whether uninstrumented classes contain synchronization operations that will be ignored.");
 
-	public synchronized byte[] define(ClassLoader definingLoader, final String name,
-			final byte[] bytes) {
-		final LoaderContext currentLoader = Loader.get(definingLoader);
-		final String internalName = name.replace('.', '/');
-		final ClassInfo rrClass = MetaDataInfoMaps.getClass(internalName);
-		if (rrClass.isSynthetic()) {
-			return bytes;
-		} else {
-			Loader.classes.put(internalName, currentLoader);
-			if (!InstrumentationFilter.shouldInstrument(rrClass)) {
-				if (RRMain.slowMode())
-					Util.log("Skipping " + name + " (Loader="
-							+ Util.objectToIdentityString(definingLoader) + ")");
-				MetaDataBuilder.preLoadFully(currentLoader, bytes);
-				if (sanityOption.get()) {
-					currentLoader.sanityCheck(new ClassReader(bytes));
-					Loader.sanityCheckedFiles.add(name);
-				}
-				Loader.writeToFileCache("classes", rrClass.getName(), bytes);
-				Loader.skippedFiles.add(name);
-				return bytes;
-			} else {
-				Loader.instrumentedFiles.add(name);
+    public synchronized byte[] define(ClassLoader definingLoader, final String name,
+            final byte[] bytes) {
+        final LoaderContext currentLoader = Loader.get(definingLoader);
+        final String internalName = name.replace('.', '/');
+        final ClassInfo rrClass = MetaDataInfoMaps.getClass(internalName);
+        if (rrClass.isSynthetic()) {
+            return bytes;
+        } else {
+            Loader.classes.put(internalName, currentLoader);
+            if (!InstrumentationFilter.shouldInstrument(rrClass)) {
+                if (RRMain.slowMode())
+                    Util.log("Skipping " + name + " (Loader="
+                            + Util.objectToIdentityString(definingLoader) + ")");
+                MetaDataBuilder.preLoadFully(currentLoader, bytes);
+                if (sanityOption.get()) {
+                    currentLoader.sanityCheck(new ClassReader(bytes));
+                    Loader.sanityCheckedFiles.add(name);
+                }
+                Loader.writeToFileCache("classes", rrClass.getName(), bytes);
+                Loader.skippedFiles.add(name);
+                return bytes;
+            } else {
+                Loader.instrumentedFiles.add(name);
 
-				byte[] bytes2 = Loader.readFromFileCache("classes", rrClass.getName());
-				if (bytes2 != null) {
-					Util.logf("Found cached version of %s", name);
-					MetaDataBuilder.preLoadFully(currentLoader, new ClassReader(bytes2));
-					for (FieldInfo f : rrClass.getFields()) {
-						if (InstrumentationFilter.shouldInstrument(f)) {
-							f.getUpdater();
-						}
-					}
-					return bytes2;
-				}
-				try {
-					return Util.eval(new TimedExpr<byte[]>("Instrumenting " + name + " (Loader="
-							+ Util.objectToIdentityString(definingLoader) + ":"
-							+ definingLoader.getClass() + ")") {
-						@Override
-						public byte[] run() {
-							MetaDataBuilder.preLoadFully(currentLoader, bytes);
-							final ClassWriter instrument = currentLoader.instrument(internalName,
-									bytes);
-							byte[] bytes2 = instrument.toByteArray();
-							Loader.writeToFileCache("classes", rrClass.getName(), bytes2);
-							return bytes2;
-						}
-					});
-				} catch (Exception e) {
-					Assert.panic(e);
-					return null;
-				}
-			}
-		}
-	}
+                byte[] bytes2 = Loader.readFromFileCache("classes", rrClass.getName());
+                if (bytes2 != null) {
+                    Util.logf("Found cached version of %s", name);
+                    MetaDataBuilder.preLoadFully(currentLoader, new ClassReader(bytes2));
+                    for (FieldInfo f : rrClass.getFields()) {
+                        if (InstrumentationFilter.shouldInstrument(f)) {
+                            f.getUpdater();
+                        }
+                    }
+                    return bytes2;
+                }
+                try {
+                    return Util.eval(new TimedExpr<byte[]>("Instrumenting " + name + " (Loader="
+                            + Util.objectToIdentityString(definingLoader) + ":"
+                            + definingLoader.getClass() + ")") {
+                        @Override
+                        public byte[] run() {
+                            MetaDataBuilder.preLoadFully(currentLoader, bytes);
+                            final ClassWriter instrument = currentLoader.instrument(internalName,
+                                    bytes);
+                            byte[] bytes2 = instrument.toByteArray();
+                            Loader.writeToFileCache("classes", rrClass.getName(), bytes2);
+                            return bytes2;
+                        }
+                    });
+                } catch (Exception e) {
+                    Assert.panic(e);
+                    return null;
+                }
+            }
+        }
+    }
 
 }
 

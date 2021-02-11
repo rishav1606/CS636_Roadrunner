@@ -33,7 +33,7 @@
 package test;
 
 public class Proc {
-  public static void main(String args[]) {
-    System.out.println(Runtime.getRuntime().availableProcessors());
-  }
+    public static void main(String args[]) {
+        System.out.println(Runtime.getRuntime().availableProcessors());
+    }
 }

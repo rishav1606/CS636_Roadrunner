@@ -39,62 +39,62 @@ import rr.state.ShadowThread;
 /** Represents a method call or return operation in the target program. */
 public class MethodEvent extends Event {
 
-	/** For instance methods, contains the object being called, or is null for static methods. */
-	private Object target;
+    /** For instance methods, contains the object being called, or is null for static methods. */
+    private Object target;
 
-	/** Syntactic information about the method. */
-	private MethodInfo info;
+    /** Syntactic information about the method. */
+    private MethodInfo info;
 
-	/** True if this is a method enter, false for a method exit. */
-	private boolean enter;
+    /** True if this is a method enter, false for a method exit. */
+    private boolean enter;
 
-	/** If using contexts, this will be the call site location */
-	private InvokeInfo invokeInfo;
+    /** If using contexts, this will be the call site location */
+    private InvokeInfo invokeInfo;
 
-	public MethodEvent(ShadowThread td) {
-		super(td);
-	}
+    public MethodEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("%s(%d,%s)", isEnter() ? "Enter" : "Exit", getThread().getTid(),
-				getInfo().toString());
-	}
+    @Override
+    public String toString() {
+        return String.format("%s(%d,%s)", isEnter() ? "Enter" : "Exit", getThread().getTid(),
+                getInfo().toString());
+    }
 
-	/** @RRInternal */
-	public void setTarget(Object target) {
-		this.target = target;
-	}
+    /** @RRInternal */
+    public void setTarget(Object target) {
+        this.target = target;
+    }
 
-	public Object getTarget() {
-		return target;
-	}
+    public Object getTarget() {
+        return target;
+    }
 
-	/** @RRInternal */
-	public void setInfo(MethodInfo methodData) {
-		this.info = methodData;
-	}
+    /** @RRInternal */
+    public void setInfo(MethodInfo methodData) {
+        this.info = methodData;
+    }
 
-	public MethodInfo getInfo() {
-		return info;
-	}
+    public MethodInfo getInfo() {
+        return info;
+    }
 
-	/** @RRInternal */
-	public void setEnter(boolean enter) {
-		this.enter = enter;
-	}
+    /** @RRInternal */
+    public void setEnter(boolean enter) {
+        this.enter = enter;
+    }
 
-	public boolean isEnter() {
-		return enter;
-	}
+    public boolean isEnter() {
+        return enter;
+    }
 
-	public InvokeInfo getInvokeInfo() {
-		return invokeInfo;
-	}
+    public InvokeInfo getInvokeInfo() {
+        return invokeInfo;
+    }
 
-	/** @RRInternal */
-	public void setInvokeInfo(InvokeInfo invokeInfo) {
-		this.invokeInfo = invokeInfo;
-	}
+    /** @RRInternal */
+    public void setInvokeInfo(InvokeInfo invokeInfo) {
+        this.invokeInfo = invokeInfo;
+    }
 
 }

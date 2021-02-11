@@ -36,25 +36,25 @@ import acme.util.count.Counter;
 import rr.state.ShadowVar;
 
 public class VectorClockPair implements ShadowVar {
-	public final VectorClock rd;
-	public final VectorClock wr;
+    public final VectorClock rd;
+    public final VectorClock wr;
 
-	private static Counter VectorClockPairs = new Counter("VectorClock", "Pair Objects");
+    private static Counter VectorClockPairs = new Counter("VectorClock", "Pair Objects");
 
-	public VectorClockPair(VectorClock vc) {
-		rd = new VectorClock(vc);
-		wr = new VectorClock(vc);
-		VectorClockPairs.inc();
-	}
+    public VectorClockPair(VectorClock vc) {
+        rd = new VectorClock(vc);
+        wr = new VectorClock(vc);
+        VectorClockPairs.inc();
+    }
 
-	public VectorClockPair() {
-		rd = new VectorClock(1);
-		wr = new VectorClock(1);
-		VectorClockPairs.inc();
-	}
+    public VectorClockPair() {
+        rd = new VectorClock(1);
+        wr = new VectorClock(1);
+        VectorClockPairs.inc();
+    }
 
-	@Override
-	public String toString() {
-		return "R" + rd + " - " + "W" + wr;
-	}
+    @Override
+    public String toString() {
+        return "R" + rd + " - " + "W" + wr;
+    }
 }

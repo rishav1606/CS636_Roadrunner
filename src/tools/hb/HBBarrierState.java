@@ -37,15 +37,15 @@ import tools.util.VectorClock;
 
 public class HBBarrierState {
 
-     VectorClock entering = new VectorClock(8);
+    VectorClock entering = new VectorClock(8);
 
-     public synchronized void reset(VectorClock old) {
-          if (entering == old) {
-               entering = new VectorClock(8);
-          }
-     }
+    public synchronized void reset(VectorClock old) {
+        if (entering == old) {
+            entering = new VectorClock(8);
+        }
+    }
 
-     public HBBarrierState(ShadowLock k) {
-     }
+    public HBBarrierState(ShadowLock k) {
+    }
 
 }

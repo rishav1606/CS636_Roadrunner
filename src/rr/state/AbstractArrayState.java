@@ -40,107 +40,107 @@ import acme.util.Yikes;
 
 public abstract class AbstractArrayState {
 
-	// Must be a Weak Ref so that our shadow state does not
-	// pin down objects that could otherwise be collected.
-	//
-	// @RRInternal
-	final private WeakReference<Object> array;
+    // Must be a Weak Ref so that our shadow state does not
+    // pin down objects that could otherwise be collected.
+    //
+    // @RRInternal
+    final private WeakReference<Object> array;
 
-	protected final int hashCode;
-	protected boolean warned = false;
+    protected final int hashCode;
+    protected boolean warned = false;
 
-	public AbstractArrayState(Object array) {
-		// Assert.assertTrue(array != null);
-		this.array = new WeakReference<Object>(array);
-		this.hashCode = Util.identityHashCode(array == null ? this : array);
-	}
+    public AbstractArrayState(Object array) {
+        // Assert.assertTrue(array != null);
+        this.array = new WeakReference<Object>(array);
+        this.hashCode = Util.identityHashCode(array == null ? this : array);
+    }
 
-	/**
-	 * May return null if array has been collected.
-	 */
-	final public Object getArray() {
-		Object l = array.get();
-		if (l == null) {
-			Yikes.yikes("Getting array of AbstractArrayState after array has been gc'd.");
-		}
-		return l;
-	}
+    /**
+     * May return null if array has been collected.
+     */
+    final public Object getArray() {
+        Object l = array.get();
+        if (l == null) {
+            Yikes.yikes("Getting array of AbstractArrayState after array has been gc'd.");
+        }
+        return l;
+    }
 
-	/*
-	 * A version to use in caches where getting null can be expected.
-	 */
-	final Object getArrayNoCheck() {
-		return array.get();
-	}
+    /*
+     * A version to use in caches where getting null can be expected.
+     */
+    final Object getArrayNoCheck() {
+        return array.get();
+    }
 
-	/**
-	 * Update the shadow state for index. Optimistic implementations can fail and return false if
-	 * the expected value is not found.
-	 */
-	public abstract boolean putState(int index, ShadowVar expected, ShadowVar v);
+    /**
+     * Update the shadow state for index. Optimistic implementations can fail and return false if
+     * the expected value is not found.
+     */
+    public abstract boolean putState(int index, ShadowVar expected, ShadowVar v);
 
-	/*
-	 * Return the shadow state for a give index.
-	 */
-	public abstract ShadowVar getState(int index);
+    /*
+     * Return the shadow state for a give index.
+     */
+    public abstract ShadowVar getState(int index);
 
-	/** @RRInternal */
-	public abstract AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i);
+    /** @RRInternal */
+    public abstract AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i);
 
-	/** @RRInternal */
-	public abstract void setShadowForNextDim(int i, AbstractArrayState s);
+    /** @RRInternal */
+    public abstract void setShadowForNextDim(int i, AbstractArrayState s);
 
-	/** @RRInternal */
-	public void specialize() {
-		if (warned)
-			return;
-		warned = true;
-		Util.log("Can't specialize array state " + this.getClass());
-	}
+    /** @RRInternal */
+    public void specialize() {
+        if (warned)
+            return;
+        warned = true;
+        Util.log("Can't specialize array state " + this.getClass());
+    }
 
-	@Override
-	public int hashCode() {
-		return hashCode;
-	}
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
 
-	public final int arrayLength() {
-		return lengthOf(getArray());
-	}
+    public final int arrayLength() {
+        return lengthOf(getArray());
+    }
 
-	public static int lengthOf(Object array) {
-		if (array instanceof Object[]) {
-			Object[] a = (Object[]) array;
-			return a.length;
-		} else {
-			if (array instanceof int[]) {
-				return ((int[]) array).length;
-			} else if (array instanceof char[]) {
-				return ((char[]) array).length;
-			} else if (array instanceof byte[]) {
-				return ((byte[]) array).length;
-			} else if (array instanceof short[]) {
-				return ((short[]) array).length;
-			} else if (array instanceof long[]) {
-				return ((long[]) array).length;
-			} else if (array instanceof boolean[]) {
-				return ((boolean[]) array).length;
-			} else if (array instanceof double[]) {
-				return ((double[]) array).length;
-			} else if (array instanceof float[]) {
-				return ((float[]) array).length;
-			} else {
-				Assert.panic("Bad target:" + array);
-				return 0;
-			}
-		}
-	}
+    public static int lengthOf(Object array) {
+        if (array instanceof Object[]) {
+            Object[] a = (Object[]) array;
+            return a.length;
+        } else {
+            if (array instanceof int[]) {
+                return ((int[]) array).length;
+            } else if (array instanceof char[]) {
+                return ((char[]) array).length;
+            } else if (array instanceof byte[]) {
+                return ((byte[]) array).length;
+            } else if (array instanceof short[]) {
+                return ((short[]) array).length;
+            } else if (array instanceof long[]) {
+                return ((long[]) array).length;
+            } else if (array instanceof boolean[]) {
+                return ((boolean[]) array).length;
+            } else if (array instanceof double[]) {
+                return ((double[]) array).length;
+            } else if (array instanceof float[]) {
+                return ((float[]) array).length;
+            } else {
+                Assert.panic("Bad target:" + array);
+                return 0;
+            }
+        }
+    }
 
-	/**
-	 * Called when the array state is created by not needed due to a concurrent creation of another
-	 * array state for an array.
-	 */
-	public void forget() {
+    /**
+     * Called when the array state is created by not needed due to a concurrent creation of another
+     * array state for an array.
+     */
+    public void forget() {
 
-	}
+    }
 
 }

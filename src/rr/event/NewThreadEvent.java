@@ -38,13 +38,13 @@ import rr.state.ShadowThread;
 
 public class NewThreadEvent extends Event {
 
-  public NewThreadEvent(ShadowThread td) {
-    super(td);
-  }
+    public NewThreadEvent(ShadowThread td) {
+        super(td);
+    }
 
-  @Override
-  public String toString() {
-    return String.format("NewThread(%d)", getThread().getTid());
-  }
+    @Override
+    public String toString() {
+        return String.format("NewThread(%d)", getThread().getTid());
+    }
 
 }

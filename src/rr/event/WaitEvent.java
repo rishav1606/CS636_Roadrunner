@@ -41,37 +41,37 @@ import rr.state.ShadowThread;
 
 public class WaitEvent extends Event {
 
-	private ShadowLock lock;
-	private WaitInfo info;
+    private ShadowLock lock;
+    private WaitInfo info;
 
-	public WaitEvent(ShadowThread td) {
-		super(td);
-	}
+    public WaitEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Wait(%d,%s)", getThread().getTid(),
-				Util.objectToIdentityString(getLock().getLock()));
-	}
+    @Override
+    public String toString() {
+        return String.format("Wait(%d,%s)", getThread().getTid(),
+                Util.objectToIdentityString(getLock().getLock()));
+    }
 
-	/** @RRInternal */
-	public void setLock(ShadowLock shadowLock) {
-		this.lock = shadowLock;
-	}
+    /** @RRInternal */
+    public void setLock(ShadowLock shadowLock) {
+        this.lock = shadowLock;
+    }
 
-	/** Returns the lock being waited on. */
-	public ShadowLock getLock() {
-		return lock;
-	}
+    /** Returns the lock being waited on. */
+    public ShadowLock getLock() {
+        return lock;
+    }
 
-	/** @RRInternal */
-	public void setInfo(WaitInfo waitInfo) {
-		this.info = waitInfo;
-	}
+    /** @RRInternal */
+    public void setInfo(WaitInfo waitInfo) {
+        this.info = waitInfo;
+    }
 
-	/** Get syntactic information about this call to Object.wait(). */
-	public WaitInfo getInfo() {
-		return info;
-	}
+    /** Get syntactic information about this call to Object.wait(). */
+    public WaitInfo getInfo() {
+        return info;
+    }
 
 }

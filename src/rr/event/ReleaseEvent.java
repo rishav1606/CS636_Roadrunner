@@ -41,37 +41,37 @@ import rr.state.ShadowThread;
 
 public class ReleaseEvent extends Event {
 
-	/** The lock being released. */
-	private ShadowLock lock;
+    /** The lock being released. */
+    private ShadowLock lock;
 
-	/** Syntactic information about this release. */
-	private ReleaseInfo info;
+    /** Syntactic information about this release. */
+    private ReleaseInfo info;
 
-	public ReleaseEvent(ShadowThread td) {
-		super(td);
-	}
+    public ReleaseEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Release(%d,%s)", getThread().getTid(),
-				Util.objectToIdentityString(getLock().getLock()));
-	}
+    @Override
+    public String toString() {
+        return String.format("Release(%d,%s)", getThread().getTid(),
+                Util.objectToIdentityString(getLock().getLock()));
+    }
 
-	/** @RRInternal */
-	public void setInfo(ReleaseInfo releaseInfo) {
-		this.info = releaseInfo;
-	}
+    /** @RRInternal */
+    public void setInfo(ReleaseInfo releaseInfo) {
+        this.info = releaseInfo;
+    }
 
-	public ReleaseInfo getInfo() {
-		return info;
-	}
+    public ReleaseInfo getInfo() {
+        return info;
+    }
 
-	/** @RRInternal */
-	public void setLock(ShadowLock shadowLock) {
-		this.lock = shadowLock;
-	}
+    /** @RRInternal */
+    public void setLock(ShadowLock shadowLock) {
+        this.lock = shadowLock;
+    }
 
-	public ShadowLock getLock() {
-		return lock;
-	}
+    public ShadowLock getLock() {
+        return lock;
+    }
 }

@@ -53,6 +53,10 @@ RoadRunner supports a subset of popular Java benchmarks like [Java Grande](https
 
       rrrun -classpath=original.jar -tool=FT2 -array=FINE -field=FINE -noTidGC -noxml -availableProcessors=4 -benchmark=1 -warmup=0 Main -t 4 -s small
 
+The following does not work since DaCapo is not supported out of the box.
+
+    rrrun -classpath=/home/swarnendu/iitk-workspace/roadrunner/benchmarks/dacapo-9.12-bach.jar -tool=WDC -noTidGC -noxml Harness -t 4 -s small avrora
+
 - Execute `avrora` with `java`:
 
       cd benchmarks/avrora
@@ -91,7 +95,7 @@ The following benchmarks also current seem to fail with unmodified RoadRunner.
     sor
     sparsematmult
 
-It should be possible to resolve the issue with batik:
+It should be possible to resolve the issue with `batik` by switching to Oracle JDK instead of OpenJDK:
 
     https://stackoverflow.com/questions/1906673/import-com-sun-image-codec-jpeg
 

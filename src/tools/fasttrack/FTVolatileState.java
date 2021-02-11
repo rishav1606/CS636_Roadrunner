@@ -37,24 +37,24 @@ import rr.state.ShadowVolatile;
 import tools.util.VectorClock;
 
 public class FTVolatileState extends VectorClock {
-	// inherited values field: protected by peer.
-	// RR ensures that peer is held when volatile access handler
-	// is called.
+    // inherited values field: protected by peer.
+    // RR ensures that peer is held when volatile access handler
+    // is called.
 
-	private final ShadowVolatile peer;
+    private final ShadowVolatile peer;
 
-	public FTVolatileState(ShadowVolatile peer, int size) {
-		super(size);
-		this.peer = peer;
-	}
+    public FTVolatileState(ShadowVolatile peer, int size) {
+        super(size);
+        this.peer = peer;
+    }
 
-	public ShadowVolatile getPeer() {
-		return peer;
-	}
+    public ShadowVolatile getPeer() {
+        return peer;
+    }
 
-	@Override
-	public synchronized String toString() {
-		return String.format("[peer %s: %s]", Util.objectToIdentityString(peer), super.toString());
-	}
+    @Override
+    public synchronized String toString() {
+        return String.format("[peer %s: %s]", Util.objectToIdentityString(peer), super.toString());
+    }
 
 }

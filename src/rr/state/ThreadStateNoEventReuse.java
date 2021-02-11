@@ -50,67 +50,67 @@ import rr.event.WaitEvent;
  */
 public final class ThreadStateNoEventReuse extends ShadowThread {
 
-	protected ThreadStateNoEventReuse(final Thread thread, final ShadowThread parent) {
-		super(thread, parent);
-	}
+    protected ThreadStateNoEventReuse(final Thread thread, final ShadowThread parent) {
+        super(thread, parent);
+    }
 
-	@Override
-	public FieldAccessEvent getFieldAccessEvent() {
-		return new FieldAccessEvent(this);
-	}
+    @Override
+    public FieldAccessEvent getFieldAccessEvent() {
+        return new FieldAccessEvent(this);
+    }
 
-	@Override
-	public VolatileAccessEvent getVolatileAccessEvent() {
-		return new VolatileAccessEvent(this);
-	}
+    @Override
+    public VolatileAccessEvent getVolatileAccessEvent() {
+        return new VolatileAccessEvent(this);
+    }
 
-	@Override
-	public ArrayAccessEvent getArrayAccessEvent() {
-		return new ArrayAccessEvent(this);
-	}
+    @Override
+    public ArrayAccessEvent getArrayAccessEvent() {
+        return new ArrayAccessEvent(this);
+    }
 
-	@Override
-	public AcquireEvent getAcquireEvent() {
-		return new AcquireEvent(this);
-	}
+    @Override
+    public AcquireEvent getAcquireEvent() {
+        return new AcquireEvent(this);
+    }
 
-	@Override
-	public ReleaseEvent getReleaseEvent() {
-		return new ReleaseEvent(this);
-	}
+    @Override
+    public ReleaseEvent getReleaseEvent() {
+        return new ReleaseEvent(this);
+    }
 
-	@Override
-	public StartEvent getStartEvent() {
-		return new StartEvent(this);
-	}
+    @Override
+    public StartEvent getStartEvent() {
+        return new StartEvent(this);
+    }
 
-	@Override
-	public WaitEvent getWaitEvent() {
-		return new WaitEvent(this);
-	}
+    @Override
+    public WaitEvent getWaitEvent() {
+        return new WaitEvent(this);
+    }
 
-	@Override
-	public JoinEvent getJoinEvent() {
-		return new JoinEvent(this);
-	}
+    @Override
+    public JoinEvent getJoinEvent() {
+        return new JoinEvent(this);
+    }
 
-	@Override
-	public InterruptEvent getInterruptEvent() {
-		return new InterruptEvent(this);
-	}
+    @Override
+    public InterruptEvent getInterruptEvent() {
+        return new InterruptEvent(this);
+    }
 
-	@Override
-	public NotifyEvent getNotifyEvent() {
-		return new NotifyEvent(this);
-	}
+    @Override
+    public NotifyEvent getNotifyEvent() {
+        return new NotifyEvent(this);
+    }
 
-	@Override
-	public SleepEvent getSleepEvent() {
-		return new SleepEvent(this);
-	}
+    @Override
+    public SleepEvent getSleepEvent() {
+        return new SleepEvent(this);
+    }
 
-	@Override
-	public ClassInitializedEvent getClassInitEvent() {
-		return new ClassInitializedEvent(this);
-	}
+    @Override
+    public ClassInitializedEvent getClassInitEvent() {
+        return new ClassInitializedEvent(this);
+    }
 }

@@ -64,6 +64,7 @@ import rr.event.StartEvent;
 import rr.event.VolatileAccessEvent;
 import rr.event.WaitEvent;
 import rr.instrument.classes.ArrayAllocSiteTracker;
+import rr.meta.AccessInfo;
 import rr.meta.ArrayAccessInfo;
 import rr.meta.ClassInfo;
 import rr.meta.FieldInfo;
@@ -303,6 +304,7 @@ public class FastTrackTool extends Tool implements BarrierListener<FTBarrierStat
 
             Object target = event.getTarget();
             if (target == null) {
+                // CS636: Static variable
                 ClassInfo owner = ((FieldAccessEvent) event).getInfo().getField().getOwner();
                 final VectorClock tV = ts_get_V(st);
                 synchronized (classInitTime) {

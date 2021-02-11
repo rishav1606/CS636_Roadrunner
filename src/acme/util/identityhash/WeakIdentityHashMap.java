@@ -362,6 +362,7 @@ public class WeakIdentityHashMap<K, V> {
         return size;
     }
 
+    // CS636: New helper methods
     public int tableSize() {
         if (table == null) {
             return 0;

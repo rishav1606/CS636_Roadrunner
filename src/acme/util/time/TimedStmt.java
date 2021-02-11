@@ -40,21 +40,21 @@ import acme.util.Util;
  */
 public abstract class TimedStmt {
 
-	private String name;
+    private String name;
 
-	public TimedStmt(String name) {
-		this.name = name;
-	}
+    public TimedStmt(String name) {
+        this.name = name;
+    }
 
-	public abstract void run() throws Exception;
+    public abstract void run() throws Exception;
 
-	public void eval() throws Exception {
-		Util.log(this);
-	}
+    public void eval() throws Exception {
+        Util.log(this);
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
 }

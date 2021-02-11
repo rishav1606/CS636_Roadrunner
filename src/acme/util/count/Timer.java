@@ -38,38 +38,38 @@ package acme.util.count;
  */
 final public class Timer extends AbstractCounter {
 
-	private long totalTime;
-	private int count = 0;
+    private long totalTime;
+    private int count = 0;
 
-	public Timer(String group, String name) {
-		super(group, name);
-		totalTime = 0;
-	}
+    public Timer(String group, String name) {
+        super(group, name);
+        totalTime = 0;
+    }
 
-	public Timer(String name) {
-		this(null, name);
-	}
+    public Timer(String name) {
+        this(null, name);
+    }
 
-	public final long start() {
-		return System.nanoTime();
-	}
+    public final long start() {
+        return System.nanoTime();
+    }
 
-	final public synchronized long stop(long startTime) {
-		long endTime = System.nanoTime();
-		long elapsed = endTime - startTime;
-		totalTime += elapsed;
-		count++;
-		return elapsed;
-	}
+    final public synchronized long stop(long startTime) {
+        long endTime = System.nanoTime();
+        long elapsed = endTime - startTime;
+        totalTime += elapsed;
+        count++;
+        return elapsed;
+    }
 
-	@Override
-	public String get() {
-		double totalTime = (this.totalTime) / 1000000;
-		if (count > 0) {
-			return String.format("<total>%g</total> <count>%d</count> <ave>%g</ave>", totalTime,
-					count, totalTime / count);
-		} else {
-			return String.format("<total>%g</total> <count>%d</count> ", totalTime, count);
-		}
-	}
+    @Override
+    public String get() {
+        double totalTime = (this.totalTime) / 1000000;
+        if (count > 0) {
+            return String.format("<total>%g</total> <count>%d</count> <ave>%g</ave>", totalTime,
+                    count, totalTime / count);
+        } else {
+            return String.format("<total>%g</total> <count>%d</count> ", totalTime, count);
+        }
+    }
 }

@@ -34,20 +34,20 @@ package rr.meta;
 
 public abstract class OperationInfo extends MetaDataInfo {
 
-	protected final String kind;
-	protected final MethodInfo enclosing;
+    protected final String kind;
+    protected final MethodInfo enclosing;
 
-	public OperationInfo(int id, SourceLocation loc, String kind, MethodInfo enclosing) {
-		super(id, loc);
-		this.kind = kind;
-		this.enclosing = enclosing;
-		if (enclosing != null) {
-			enclosing.addOp(this);
-		}
-	}
+    public OperationInfo(int id, SourceLocation loc, String kind, MethodInfo enclosing) {
+        super(id, loc);
+        this.kind = kind;
+        this.enclosing = enclosing;
+        if (enclosing != null) {
+            enclosing.addOp(this);
+        }
+    }
 
-	public MethodInfo getEnclosing() {
-		return enclosing;
-	}
+    public MethodInfo getEnclosing() {
+        return enclosing;
+    }
 
 }

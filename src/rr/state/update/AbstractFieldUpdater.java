@@ -35,8 +35,8 @@ package rr.state.update;
 import rr.state.ShadowVar;
 
 public abstract class AbstractFieldUpdater {
-  public abstract ShadowVar getState(Object o);
+    public abstract ShadowVar getState(Object o);
 
-  public abstract boolean putState(Object o, ShadowVar expectedGS, ShadowVar newGS);
+    public abstract boolean putState(Object o, ShadowVar expectedGS, ShadowVar newGS);
 
 }

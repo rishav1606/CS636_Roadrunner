@@ -40,24 +40,24 @@ import rr.state.ShadowThread;
  */
 public class ClassInitializedEvent extends Event {
 
-	private ClassInfo c;
+    private ClassInfo c;
 
-	public ClassInitializedEvent(ShadowThread td) {
-		super(td);
-		this.setRRClass(c);
-	}
+    public ClassInitializedEvent(ShadowThread td) {
+        super(td);
+        this.setRRClass(c);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("ClassInited(%d,%s)", getThread().getTid(), getRRClass());
-	}
+    @Override
+    public String toString() {
+        return String.format("ClassInited(%d,%s)", getThread().getTid(), getRRClass());
+    }
 
-	/** @RRInternal */
-	public void setRRClass(ClassInfo c) {
-		this.c = c;
-	}
+    /** @RRInternal */
+    public void setRRClass(ClassInfo c) {
+        this.c = c;
+    }
 
-	public ClassInfo getRRClass() {
-		return c;
-	}
+    public ClassInfo getRRClass() {
+        return c;
+    }
 }

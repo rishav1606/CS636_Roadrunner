@@ -43,53 +43,53 @@ import rr.tool.Tool;
 @Abbrev("RS")
 final public class ReadSharedTool extends Tool {
 
-	public static class ReadShared implements ShadowVar {
+    public static class ReadShared implements ShadowVar {
 
-		private static final ReadShared single = new ReadShared();
+        private static final ReadShared single = new ReadShared();
 
-		private ReadShared() {
-		}
+        private ReadShared() {
+        }
 
-		public static ReadShared get() {
-			return single;
-		}
+        public static ReadShared get() {
+            return single;
+        }
 
-		@Override
-		public String toString() {
-			return "READ SHARED";
-		}
-	}
+        @Override
+        public String toString() {
+            return "READ SHARED";
+        }
+    }
 
-	public ReadSharedTool(String name, Tool next, CommandLine commandLine) {
-		super(name, next, commandLine);
-	}
+    public ReadSharedTool(String name, Tool next, CommandLine commandLine) {
+        super(name, next, commandLine);
+    }
 
-	@Override
-	public void volatileAccess(VolatileAccessEvent fae) {
-		super.volatileAccess(fae);
-	}
+    @Override
+    public void volatileAccess(VolatileAccessEvent fae) {
+        super.volatileAccess(fae);
+    }
 
-	@Override
-	public void access(AccessEvent aae) {
-		if (aae.getOriginalShadow() == ReadShared.get()) {
-			if (aae.isWrite()) {
-				advance(aae);
-			}
-		} else {
-			super.access(aae);
-		}
-	}
+    @Override
+    public void access(AccessEvent aae) {
+        if (aae.getOriginalShadow() == ReadShared.get()) {
+            if (aae.isWrite()) {
+                advance(aae);
+            }
+        } else {
+            super.access(aae);
+        }
+    }
 
-	@Override
-	public ShadowVar makeShadowVar(AccessEvent fae) {
-		if (fae.isWrite()) {
-			return super.makeShadowVar(fae);
-		} else {
-			return ReadShared.get();
-		}
-	}
+    @Override
+    public ShadowVar makeShadowVar(AccessEvent fae) {
+        if (fae.isWrite()) {
+            return super.makeShadowVar(fae);
+        } else {
+            return ReadShared.get();
+        }
+    }
 
-	public static boolean readFastPath(ShadowVar vs, ShadowThread ts) {
-		return vs == ReadShared.get();
-	}
+    public static boolean readFastPath(ShadowVar vs, ShadowThread ts) {
+        return vs == ReadShared.get();
+    }
 }

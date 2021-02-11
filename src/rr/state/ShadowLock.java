@@ -47,117 +47,117 @@ import rr.RRMain;
 
 public class ShadowLock extends Decoratable {
 
-	public static final DecorationFactory<ShadowLock> decoratorFactory = new DecorationFactory<ShadowLock>();
+    public static final DecorationFactory<ShadowLock> decoratorFactory = new DecorationFactory<ShadowLock>();
 
-	public static <T> Decoration<ShadowLock, T> makeDecoration(String name,
-			DecorationFactory.Type type, DefaultValue<ShadowLock, T> defaultValueMaker) {
-		return decoratorFactory.make(name, type, defaultValueMaker);
-	}
+    public static <T> Decoration<ShadowLock, T> makeDecoration(String name,
+            DecorationFactory.Type type, DefaultValue<ShadowLock, T> defaultValueMaker) {
+        return decoratorFactory.make(name, type, defaultValueMaker);
+    }
 
-	private static final Counter count = new Counter("ShadowLock", "objects");
+    private static final Counter count = new Counter("ShadowLock", "objects");
 
-	// Must be a Weak Ref so that our shadow state does not
-	// pin down objects that could otherwise be collected.
-	private final WeakReference<Object> lock;
+    // Must be a Weak Ref so that our shadow state does not
+    // pin down objects that could otherwise be collected.
+    private final WeakReference<Object> lock;
 
-	private int holdCount = 0;
-	private ShadowThread curThread = null;
-	private final int hashCode;
+    private int holdCount = 0;
+    private ShadowThread curThread = null;
+    private final int hashCode;
 
-	static private int counter = 0;
+    static private int counter = 0;
 
-	/*
-	 * Constructor / helper methods.
-	 */
+    /*
+     * Constructor / helper methods.
+     */
 
-	private ShadowLock(Object lock) {
-		// Assert.assertTrue(lock != null);
-		this.lock = new WeakReference<Object>(lock);
-		hashCode = counter++;
-		if (RRMain.slowMode())
-			count.inc();
-	}
+    private ShadowLock(Object lock) {
+        // Assert.assertTrue(lock != null);
+        this.lock = new WeakReference<Object>(lock);
+        hashCode = counter++;
+        if (RRMain.slowMode())
+            count.inc();
+    }
 
-	@Override
-	public final int hashCode() {
-		return hashCode;
-	}
+    @Override
+    public final int hashCode() {
+        return hashCode;
+    }
 
-	public final int get() {
-		// check();
-		return holdCount;
-	}
+    public final int get() {
+        // check();
+        return holdCount;
+    }
 
-	public final ShadowThread getHoldingThread() {
-		// check();
-		return curThread;
-	}
+    public final ShadowThread getHoldingThread() {
+        // check();
+        return curThread;
+    }
 
-	public final int inc(ShadowThread curThread) {
-		if (holdCount == 0) {
-			this.curThread = curThread;
-		} else {
-			// if (RR.slowMode()) Util.assertTrue(this.curThread == curThread); // , "%d != %d",
-			// this.curThread.tid, curThread.tid);
-		}
-		holdCount++;
-		// check();
-		return holdCount;
-	}
+    public final int inc(ShadowThread curThread) {
+        if (holdCount == 0) {
+            this.curThread = curThread;
+        } else {
+            // if (RR.slowMode()) Util.assertTrue(this.curThread == curThread); // , "%d != %d",
+            // this.curThread.tid, curThread.tid);
+        }
+        holdCount++;
+        // check();
+        return holdCount;
+    }
 
-	public final int dec(ShadowThread curThread) {
-		// check();
-		holdCount--;
-		if (holdCount == 0) {
-			this.curThread = null;
-			// check();
-		} else {
-			// if (RR.slowMode()) Util.assertTrue(this.curThread == curThread); //, "%d != %d",
-			// this.curThread.tid, curThread.tid);
-		}
-		// check();
-		return holdCount;
-	}
+    public final int dec(ShadowThread curThread) {
+        // check();
+        holdCount--;
+        if (holdCount == 0) {
+            this.curThread = null;
+            // check();
+        } else {
+            // if (RR.slowMode()) Util.assertTrue(this.curThread == curThread); //, "%d != %d",
+            // this.curThread.tid, curThread.tid);
+        }
+        // check();
+        return holdCount;
+    }
 
-	public final void set(int count, ShadowThread cur) {
-		holdCount = count;
-		curThread = cur;
-		// check();
-	}
+    public final void set(int count, ShadowThread cur) {
+        holdCount = count;
+        curThread = cur;
+        // check();
+    }
 
-	@Override
-	public String toString() {
-		return "LOCK " + Util.objectToIdentityString(this.getLock());
-	}
+    @Override
+    public String toString() {
+        return "LOCK " + Util.objectToIdentityString(this.getLock());
+    }
 
-	public void check() {
-		Assert.assertTrue(
-				(curThread == null && holdCount == 0) || (curThread != null && holdCount != 0),
-				"curThread:" + curThread + " holdCount:" + holdCount);
-	}
+    public void check() {
+        Assert.assertTrue(
+                (curThread == null && holdCount == 0) || (curThread != null && holdCount != 0),
+                "curThread:" + curThread + " holdCount:" + holdCount);
+    }
 
-	private static final WeakResourceManager<Object, ShadowLock> locks = new WeakResourceManager<Object, ShadowLock>() {
+    private static final WeakResourceManager<Object, ShadowLock> locks = new WeakResourceManager<Object, ShadowLock>() {
 
-		@Override
-		protected ShadowLock make(Object k) {
-			return new ShadowLock(k);
-		}
-	};
+        @Override
+        protected ShadowLock make(Object k) {
+            return new ShadowLock(k);
+        }
+    };
 
-	public static ShadowLock get(Object o) {
-		return locks.get(o);
-	}
+    public static ShadowLock get(Object o) {
+        return locks.get(o);
+    }
 
-	/**
-	 * This may return null if the object has been collected.
-	 */
-	public Object getLock() {
-		if (lock == null)
-			return null;
-		Object l = lock.get();
-		if (l == null)
-			Yikes.yikes("Getting target of ShadowLock after target has been gc'd");
-		return l;
-	}
+    /**
+     * This may return null if the object has been collected.
+     */
+    public Object getLock() {
+        if (lock == null)
+            return null;
+        Object l = lock.get();
+        if (l == null)
+            Yikes.yikes("Getting target of ShadowLock after target has been gc'd");
+        return l;
+    }
 
 }

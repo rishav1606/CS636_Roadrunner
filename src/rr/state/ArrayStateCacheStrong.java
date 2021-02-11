@@ -36,41 +36,41 @@ import acme.util.Assert;
 
 public class ArrayStateCacheStrong extends AbstractArrayStateCache {
 
-	public final AbstractArrayState shadowCache[] = new AbstractArrayState[rr.tool.RR.maxTidOption
-			.get()];
+    public final AbstractArrayState shadowCache[] = new AbstractArrayState[rr.tool.RR.maxTidOption
+            .get()];
 
-	protected ArrayStateCacheStrong(String tag, int id) {
-		super(tag, id);
-		for (int j = 0; j < shadowCache.length; j++) {
-			shadowCache[j] = ArrayStateFactory.NULL;
-		}
-	}
+    protected ArrayStateCacheStrong(String tag, int id) {
+        super(tag, id);
+        for (int j = 0; j < shadowCache.length; j++) {
+            shadowCache[j] = ArrayStateFactory.NULL;
+        }
+    }
 
-	@Override
-	public void clear(int tid) {
-		shadowCache[tid] = ArrayStateFactory.NULL;
-	}
+    @Override
+    public void clear(int tid) {
+        shadowCache[tid] = ArrayStateFactory.NULL;
+    }
 
-	@Override
-	public AbstractArrayState get(Object array, ShadowThread td) {
-		try {
-			int n = td.getTid();
-			if (this.shadowCache[n].getArrayNoCheck() == array) {
-				AbstractArrayState as = shadowCache[n];
-				return as;
-			}
+    @Override
+    public AbstractArrayState get(Object array, ShadowThread td) {
+        try {
+            int n = td.getTid();
+            if (this.shadowCache[n].getArrayNoCheck() == array) {
+                AbstractArrayState as = shadowCache[n];
+                return as;
+            }
 
-			if (td.clearCaches) {
-				clearAll(td.getTid());
-				td.clearCaches = false;
-			}
+            if (td.clearCaches) {
+                clearAll(td.getTid());
+                td.clearCaches = false;
+            }
 
-			AbstractArrayState as = td.arrayStateFactory.get(array);
-			shadowCache[n] = as;
-			return as;
-		} catch (ArrayIndexOutOfBoundsException e) {
-			Assert.panic("Tid > cache size.  Change w/ -maxTid");
-			return null;
-		}
-	}
+            AbstractArrayState as = td.arrayStateFactory.get(array);
+            shadowCache[n] = as;
+            return as;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Assert.panic("Tid > cache size.  Change w/ -maxTid");
+            return null;
+        }
+    }
 }

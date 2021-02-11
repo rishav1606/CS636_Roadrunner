@@ -40,11 +40,11 @@ import java.util.Arrays;
  */
 public class Decoratable implements Serializable {
 
-  /** Internal array of decoration values. NEVER ACCESS THIS DIRECTLY. */
-  Object decorations[] = new Object[2];
+    /** Internal array of decoration values. NEVER ACCESS THIS DIRECTLY. */
+    Object decorations[] = new Object[2];
 
-  public String getDecorationsAsString() {
-    return Arrays.asList(decorations).toString();
-  }
+    public String getDecorationsAsString() {
+        return Arrays.asList(decorations).toString();
+    }
 
 }

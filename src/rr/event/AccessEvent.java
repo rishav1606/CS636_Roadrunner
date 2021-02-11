@@ -41,90 +41,90 @@ import rr.tool.TaggedValue;
 
 public abstract class AccessEvent extends Event {
 
-	/**
-	 * What kind of access: FIELD: to a (static or non-static) non-volatile field; ARRAY: to an
-	 * array element; or VOLATILE to a (static or non-static) volatile field.
-	 */
-	public static enum Kind {
-		FIELD, ARRAY, VOLATILE, SPECIAL
-	}
+    /**
+     * What kind of access: FIELD: to a (static or non-static) non-volatile field; ARRAY: to an
+     * array element; or VOLATILE to a (static or non-static) volatile field.
+     */
+    public static enum Kind {
+        FIELD, ARRAY, VOLATILE, SPECIAL
+    }
 
-	/**
-	 * For arrays and non-static (volatile or non-volatile) field accesses, indicates the array or
-	 * object being accessed. Is null for static field accesses.
-	 */
-	protected Object target;
+    /**
+     * For arrays and non-static (volatile or non-volatile) field accesses, indicates the array or
+     * object being accessed. Is null for static field accesses.
+     */
+    protected Object target;
 
-	/** Whether this access is a read or a write. */
-	protected boolean isWrite;
+    /** Whether this access is a read or a write. */
+    protected boolean isWrite;
 
-	/**
-	 * The ShadowVar (aka shadow location) for the accessed location, right before the access is
-	 * performed.
-	 */
-	protected ShadowVar originalShadow;
+    /**
+     * The ShadowVar (aka shadow location) for the accessed location, right before the access is
+     * performed.
+     */
+    protected ShadowVar originalShadow;
 
-	/**
-	 * @RRExperimental When RoadRunner is configured with the -value flag, oldValue contains the
-	 *                 value from the accessed location.
-	 */
-	public TaggedValue oldValue = new TaggedValue();
+    /**
+     * @RRExperimental When RoadRunner is configured with the -value flag, oldValue contains the
+     *                 value from the accessed location.
+     */
+    public TaggedValue oldValue = new TaggedValue();
 
-	/**
-	 * @RRExperimental When RoadRunner is configured with the -value flag, tools can update newValue
-	 *                 and thus control the value returned to the target program for read events.
-	 */
-	public TaggedValue newValue = new TaggedValue();
+    /**
+     * @RRExperimental When RoadRunner is configured with the -value flag, tools can update newValue
+     *                 and thus control the value returned to the target program for read events.
+     */
+    public TaggedValue newValue = new TaggedValue();
 
-	/**
-	 * Creates an AccessEvent for accesses by thread td. This event is then re-used for subsequent
-	 * accesses by that thread, to avoid allocation overhead.
-	 */
+    /**
+     * Creates an AccessEvent for accesses by thread td. This event is then re-used for subsequent
+     * accesses by that thread, to avoid allocation overhead.
+     */
 
-	public AccessEvent(ShadowThread td) {
-		super(td);
-	}
+    public AccessEvent(ShadowThread td) {
+        super(td);
+    }
 
-	/** Update the shadow location, returning true if atomic test-and-set succeeds. */
-	public abstract boolean putShadow(ShadowVar newShadow);
+    /** Update the shadow location, returning true if atomic test-and-set succeeds. */
+    public abstract boolean putShadow(ShadowVar newShadow);
 
-	/** Get current shadow value. May be different than originalShadow, if interference happens. */
-	public abstract ShadowVar getShadow();
+    /** Get current shadow value. May be different than originalShadow, if interference happens. */
+    public abstract ShadowVar getShadow();
 
-	/** Get information about this syntactic access. */
-	public abstract AccessInfo getAccessInfo();
+    /** Get information about this syntactic access. */
+    public abstract AccessInfo getAccessInfo();
 
-	/** Returns the kind of this event. */
-	public abstract Kind getKind();
+    /** Returns the kind of this event. */
+    public abstract Kind getKind();
 
-	/** Returns the target field. */
-	public Object getTarget() {
-		return target;
-	}
+    /** Returns the target field. */
+    public Object getTarget() {
+        return target;
+    }
 
-	/** @RRInternal */
-	public void setTarget(Object target) {
-		this.target = target;
-	}
+    /** @RRInternal */
+    public void setTarget(Object target) {
+        this.target = target;
+    }
 
-	/** Returns the isWrite field. */
-	public boolean isWrite() {
-		return isWrite;
-	}
+    /** Returns the isWrite field. */
+    public boolean isWrite() {
+        return isWrite;
+    }
 
-	/** @RRInternal */
-	public void setWrite(boolean isWrite) {
-		this.isWrite = isWrite;
-	}
+    /** @RRInternal */
+    public void setWrite(boolean isWrite) {
+        this.isWrite = isWrite;
+    }
 
-	/** Returns the state field, right before event was dispatched. */
-	public ShadowVar getOriginalShadow() {
-		return originalShadow;
-	}
+    /** Returns the state field, right before event was dispatched. */
+    public ShadowVar getOriginalShadow() {
+        return originalShadow;
+    }
 
-	/** @RRInternal */
-	public void putOriginalShadow(ShadowVar newOriginalShadow) {
-		this.originalShadow = newOriginalShadow;
-	}
+    /** @RRInternal */
+    public void putOriginalShadow(ShadowVar newOriginalShadow) {
+        this.originalShadow = newOriginalShadow;
+    }
 
 }

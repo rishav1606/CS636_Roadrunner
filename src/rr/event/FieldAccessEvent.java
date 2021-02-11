@@ -44,86 +44,86 @@ import rr.state.update.AbstractFieldUpdater;
 
 public class FieldAccessEvent extends AccessEvent {
 
-	/** Syntactic information about this field access. */
-	protected FieldAccessInfo info;
+    /** Syntactic information about this field access. */
+    protected FieldAccessInfo info;
 
-	/** RoadRunner internal field. */
-	protected AbstractFieldUpdater updater;
+    /** RoadRunner internal field. */
+    protected AbstractFieldUpdater updater;
 
-	public FieldAccessEvent(ShadowThread td) {
-		super(td);
-	}
+    public FieldAccessEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper("");
-	}
+    @Override
+    public String toString() {
+        return toStringHelper("");
+    }
 
-	protected String toStringHelper(String prefix) {
-		if (!oldValue.isEmpty()) {
-			if (isWrite) {
-				return String.format("%sWr(%d,%s.%s)[%s -> %s]", prefix, getThread().getTid(),
-						Util.objectToIdentityString(target), getInfo().getField().getKey(),
-						oldValue, newValue);
-			} else {
-				return String.format("%sRd(%d,%s.%s)[%s]", prefix, getThread().getTid(),
-						Util.objectToIdentityString(target), getInfo().getField().getKey(),
-						oldValue);
-			}
-		} else {
-			return String.format("%s%s(%d,%s.%s)", prefix, this.isWrite ? "Wr" : "Rd",
-					getThread().getTid(), Util.objectToIdentityString(target),
-					getInfo().getField().getKey());
-		}
-	}
+    protected String toStringHelper(String prefix) {
+        if (!oldValue.isEmpty()) {
+            if (isWrite) {
+                return String.format("%sWr(%d,%s.%s)[%s -> %s]", prefix, getThread().getTid(),
+                        Util.objectToIdentityString(target), getInfo().getField().getKey(),
+                        oldValue, newValue);
+            } else {
+                return String.format("%sRd(%d,%s.%s)[%s]", prefix, getThread().getTid(),
+                        Util.objectToIdentityString(target), getInfo().getField().getKey(),
+                        oldValue);
+            }
+        } else {
+            return String.format("%s%s(%d,%s.%s)", prefix, this.isWrite ? "Wr" : "Rd",
+                    getThread().getTid(), Util.objectToIdentityString(target),
+                    getInfo().getField().getKey());
+        }
+    }
 
-	@Override
-	public final boolean putShadow(ShadowVar newGS) {
-		boolean b = getUpdater().putState(target, this.getOriginalShadow(), newGS);
-		if (!b) {
-			if (this.getShadow() == newGS)
-				return true; // optimize redundant update
-			Yikes.yikes("Bad Update");
-			this.originalShadow = getShadow();
-			return false;
-		} else {
-			return true;
-		}
-	}
+    @Override
+    public final boolean putShadow(ShadowVar newGS) {
+        boolean b = getUpdater().putState(target, this.getOriginalShadow(), newGS);
+        if (!b) {
+            if (this.getShadow() == newGS)
+                return true; // optimize redundant update
+            Yikes.yikes("Bad Update");
+            this.originalShadow = getShadow();
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-	@Override
-	public final ShadowVar getShadow() {
-		return getUpdater().getState(target);
-	}
+    @Override
+    public final ShadowVar getShadow() {
+        return getUpdater().getState(target);
+    }
 
-	@Override
-	public AccessInfo getAccessInfo() {
-		return getInfo();
-	}
+    @Override
+    public AccessInfo getAccessInfo() {
+        return getInfo();
+    }
 
-	/** @RRInternal */
-	public void setInfo(FieldAccessInfo fieldAccessInfo) {
-		this.info = fieldAccessInfo;
-	}
+    /** @RRInternal */
+    public void setInfo(FieldAccessInfo fieldAccessInfo) {
+        this.info = fieldAccessInfo;
+    }
 
-	public FieldAccessInfo getInfo() {
-		return info;
-	}
+    public FieldAccessInfo getInfo() {
+        return info;
+    }
 
-	/** @RRInternal */
-	public void setUpdater(AbstractFieldUpdater updater) {
-		this.updater = updater;
-	}
+    /** @RRInternal */
+    public void setUpdater(AbstractFieldUpdater updater) {
+        this.updater = updater;
+    }
 
-	/** @RRInternal */
-	public AbstractFieldUpdater getUpdater() {
-		return updater;
-	}
+    /** @RRInternal */
+    public AbstractFieldUpdater getUpdater() {
+        return updater;
+    }
 
-	/** Returns Kind.FIELD */
-	@Override
-	public Kind getKind() {
-		return Kind.FIELD;
-	}
+    /** Returns Kind.FIELD */
+    @Override
+    public Kind getKind() {
+        return Kind.FIELD;
+    }
 
 }

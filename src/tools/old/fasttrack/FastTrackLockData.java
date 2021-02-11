@@ -37,17 +37,17 @@ import tools.old.util.CV;
 
 public class FastTrackLockData {
 
-	public final ShadowLock peer;
-	public final CV cv;
+    public final ShadowLock peer;
+    public final CV cv;
 
-	public FastTrackLockData(ShadowLock ld) {
-		this.peer = ld;
-		this.cv = new CV(FastTrackTool.INIT_CV_SIZE);
-	}
+    public FastTrackLockData(ShadowLock ld) {
+        this.peer = ld;
+        this.cv = new CV(FastTrackTool.INIT_CV_SIZE);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("[CV=%s]", cv);
-	}
+    @Override
+    public String toString() {
+        return String.format("[CV=%s]", cv);
+    }
 
 }

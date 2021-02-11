@@ -38,40 +38,40 @@ import rr.state.ShadowThread;
 /** Represents a call to Thread.join by the target program. */
 public class JoinEvent extends Event {
 
-	/**
-	 * The thread that we are going to join on (that is, wait for). Note joiningThread.tid could be
-	 * -1 if this event happens after the tid is reused for a new thread...
-	 */
-	private ShadowThread joiningThread;
+    /**
+     * The thread that we are going to join on (that is, wait for). Note joiningThread.tid could be
+     * -1 if this event happens after the tid is reused for a new thread...
+     */
+    private ShadowThread joiningThread;
 
-	/** Syntactic information about this operation. */
-	private JoinInfo info;
+    /** Syntactic information about this operation. */
+    private JoinInfo info;
 
-	public JoinEvent(ShadowThread td) {
-		super(td);
-	}
+    public JoinEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Join(%d,%d)", getThread().getTid(), getJoiningThread().getTid());
-	}
+    @Override
+    public String toString() {
+        return String.format("Join(%d,%d)", getThread().getTid(), getJoiningThread().getTid());
+    }
 
-	/** @RRInternal */
-	public void setJoiningThread(ShadowThread joiningThread) {
-		this.joiningThread = joiningThread;
-	}
+    /** @RRInternal */
+    public void setJoiningThread(ShadowThread joiningThread) {
+        this.joiningThread = joiningThread;
+    }
 
-	public ShadowThread getJoiningThread() {
-		return joiningThread;
-	}
+    public ShadowThread getJoiningThread() {
+        return joiningThread;
+    }
 
-	/** @RRInternal */
-	public void setInfo(JoinInfo joinInfo) {
-		this.info = joinInfo;
-	}
+    /** @RRInternal */
+    public void setInfo(JoinInfo joinInfo) {
+        this.info = joinInfo;
+    }
 
-	public JoinInfo getInfo() {
-		return info;
-	}
+    public JoinInfo getInfo() {
+        return info;
+    }
 
 }

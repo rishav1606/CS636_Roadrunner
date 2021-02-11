@@ -34,18 +34,18 @@ package rr.meta;
 
 public class AcquireInfo extends OperationInfo {
 
-  public AcquireInfo(int id, SourceLocation loc, MethodInfo enclosing) {
-    super(id, loc, "acquire", enclosing);
-  }
+    public AcquireInfo(int id, SourceLocation loc, MethodInfo enclosing) {
+        super(id, loc, "acquire", enclosing);
+    }
 
-  @Override
-  protected String computeKey() {
-    return MetaDataInfoKeys.getLockKey(this.getLoc(), true);
-  }
+    @Override
+    protected String computeKey() {
+        return MetaDataInfoKeys.getLockKey(this.getLoc(), true);
+    }
 
-  @Override
-  public void accept(MetaDataInfoVisitor v) {
-    v.visit(this);
-  }
+    @Override
+    public void accept(MetaDataInfoVisitor v) {
+        v.visit(this);
+    }
 
 }

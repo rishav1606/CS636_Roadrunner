@@ -37,34 +37,34 @@ import tools.util.VectorClock;
 
 public class FTBarrierState {
 
-	private final Object barrier;
+    private final Object barrier;
 
-	// clock used to record the max of all threads upon entry
-	// the clock field is protected by this.
-	// barrier must be held when performing any operations on clock.
-	private VectorClock clock;
+    // clock used to record the max of all threads upon entry
+    // the clock field is protected by this.
+    // barrier must be held when performing any operations on clock.
+    private VectorClock clock;
 
-	public FTBarrierState(Object k, int size) {
-		clock = new VectorClock(size);
-		barrier = k;
-	}
+    public FTBarrierState(Object k, int size) {
+        clock = new VectorClock(size);
+        barrier = k;
+    }
 
-	/*
-	 * Each thread should call this upon exiting the barrier. It ensure the barrier has created a
-	 * new vector clock to use as threads enter during the next round.
-	 */
-	public synchronized void stopUsingOldVectorClock(VectorClock old) {
-		if (clock == old) {
-			clock = new VectorClock(old.size());
-		}
-	}
+    /*
+     * Each thread should call this upon exiting the barrier. It ensure the barrier has created a
+     * new vector clock to use as threads enter during the next round.
+     */
+    public synchronized void stopUsingOldVectorClock(VectorClock old) {
+        if (clock == old) {
+            clock = new VectorClock(old.size());
+        }
+    }
 
-	public synchronized VectorClock enterBarrier() {
-		return clock;
-	}
+    public synchronized VectorClock enterBarrier() {
+        return clock;
+    }
 
-	public synchronized String toString() {
-		return "[peer " + Util.objectToIdentityString(barrier) + ": " + clock + "]";
-	}
+    public synchronized String toString() {
+        return "[peer " + Util.objectToIdentityString(barrier) + ": " + clock + "]";
+    }
 
 }

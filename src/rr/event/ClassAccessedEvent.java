@@ -42,24 +42,24 @@ import rr.state.ShadowThread;
  */
 public class ClassAccessedEvent extends Event {
 
-	private ClassInfo c;
+    private ClassInfo c;
 
-	public ClassAccessedEvent(ShadowThread td) {
-		super(td);
-		this.setRRClass(c);
-	}
+    public ClassAccessedEvent(ShadowThread td) {
+        super(td);
+        this.setRRClass(c);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("ClassAccssed(%d,%s)", getThread().getTid(), getRRClass());
-	}
+    @Override
+    public String toString() {
+        return String.format("ClassAccssed(%d,%s)", getThread().getTid(), getRRClass());
+    }
 
-	/** @RRInternal */
-	public void setRRClass(ClassInfo c) {
-		this.c = c;
-	}
+    /** @RRInternal */
+    public void setRRClass(ClassInfo c) {
+        this.c = c;
+    }
 
-	public ClassInfo getRRClass() {
-		return c;
-	}
+    public ClassInfo getRRClass() {
+        return c;
+    }
 }

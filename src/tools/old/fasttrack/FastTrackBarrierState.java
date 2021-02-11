@@ -37,23 +37,23 @@ import tools.old.util.CV;
 
 public class FastTrackBarrierState {
 
-	private CV entering = new CV(8);
+    private CV entering = new CV(8);
 
-	public synchronized void reset(CV old) {
-		if (getEntering() == old) {
-			setEntering(new CV(8));
-		}
-	}
+    public synchronized void reset(CV old) {
+        if (getEntering() == old) {
+            setEntering(new CV(8));
+        }
+    }
 
-	public FastTrackBarrierState(ShadowLock k) {
-	}
+    public FastTrackBarrierState(ShadowLock k) {
+    }
 
-	public void setEntering(CV entering) {
-		this.entering = entering;
-	}
+    public void setEntering(CV entering) {
+        this.entering = entering;
+    }
 
-	public CV getEntering() {
-		return entering;
-	}
+    public CV getEntering() {
+        return entering;
+    }
 
 }

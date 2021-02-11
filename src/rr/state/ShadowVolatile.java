@@ -54,106 +54,106 @@ import rr.meta.MetaDataInfoMaps;
  */
 public class ShadowVolatile extends Decoratable {
 
-	private static final DecorationFactory<ShadowVolatile> decoratorFactory = new DecorationFactory<ShadowVolatile>();
+    private static final DecorationFactory<ShadowVolatile> decoratorFactory = new DecorationFactory<ShadowVolatile>();
 
-	/**
-	 * Create a new decoration for volatile variables.
-	 * 
-	 * @param                   <T>
-	 * @param name
-	 * @param type
-	 * @param defaultValueMaker
-	 */
-	public static <T> Decoration<ShadowVolatile, T> makeDecoration(String name,
-			DecorationFactory.Type type, DefaultValue<ShadowVolatile, T> defaultValueMaker) {
-		return decoratorFactory.make(name, type, defaultValueMaker);
-	}
+    /**
+     * Create a new decoration for volatile variables.
+     *
+     * @param <T>
+     * @param name
+     * @param type
+     * @param defaultValueMaker
+     */
+    public static <T> Decoration<ShadowVolatile, T> makeDecoration(String name,
+            DecorationFactory.Type type, DefaultValue<ShadowVolatile, T> defaultValueMaker) {
+        return decoratorFactory.make(name, type, defaultValueMaker);
+    }
 
-	private static final Counter count = new Counter("ShadowVolatile", "objects");
+    private static final Counter count = new Counter("ShadowVolatile", "objects");
 
-	private final WeakReference<Object> target;
-	private final FieldInfo fd;
+    private final WeakReference<Object> target;
+    private final FieldInfo fd;
 
-	private final int hashCode;
+    private final int hashCode;
 
-	private ShadowVolatile(Object target, FieldInfo fd) {
-		// Assert.assertTrue(target != null || fd.isStatic());
-		this.target = new WeakReference<Object>(target);
-		this.fd = fd;
-		this.hashCode = Util.identityHashCode(target) + Util.identityHashCode(fd);
-		if (RRMain.slowMode())
-			count.inc();
-	}
+    private ShadowVolatile(Object target, FieldInfo fd) {
+        // Assert.assertTrue(target != null || fd.isStatic());
+        this.target = new WeakReference<Object>(target);
+        this.fd = fd;
+        this.hashCode = Util.identityHashCode(target) + Util.identityHashCode(fd);
+        if (RRMain.slowMode())
+            count.inc();
+    }
 
-	@Override
-	public final int hashCode() {
-		return hashCode;
-	}
+    @Override
+    public final int hashCode() {
+        return hashCode;
+    }
 
-	@Override
-	public String toString() {
-		return "VOLATILE " + Util.objectToIdentityString(this.getTarget()) + "."
-				+ getField().getName();
-	}
+    @Override
+    public String toString() {
+        return "VOLATILE " + Util.objectToIdentityString(this.getTarget()) + "."
+                + getField().getName();
+    }
 
-	/**
-	 * This may return null in two cases: 1) if the field is a static field. 2) if the owning object
-	 * has already been garbage collected.
-	 */
-	public Object getTarget() {
-		Object l = target.get();
-		if (l == null && !fd.isStatic())
-			Yikes.yikes("Getting target of ShadowVolatile after target has been gc'd");
-		return l;
-	}
+    /**
+     * This may return null in two cases: 1) if the field is a static field. 2) if the owning object
+     * has already been garbage collected.
+     */
+    public Object getTarget() {
+        Object l = target.get();
+        if (l == null && !fd.isStatic())
+            Yikes.yikes("Getting target of ShadowVolatile after target has been gc'd");
+        return l;
+    }
 
-	public FieldInfo getField() {
-		return fd;
-	}
+    public FieldInfo getField() {
+        return fd;
+    }
 
-	/*
-	 * Use Weak Resource Managers to avoid pinning down objects that could be collected.
-	 */
-	private static class ByFieldTable
-			extends ResourceManager<FieldInfo, WeakResourceManager<Object, ShadowVolatile>> {
+    /*
+     * Use Weak Resource Managers to avoid pinning down objects that could be collected.
+     */
+    private static class ByFieldTable
+            extends ResourceManager<FieldInfo, WeakResourceManager<Object, ShadowVolatile>> {
 
-		public ByFieldTable() {
-			super(11);
-		}
+        public ByFieldTable() {
+            super(11);
+        }
 
-		@Override
-		protected WeakResourceManager<Object, ShadowVolatile> make(final FieldInfo field) {
-			return new WeakResourceManager<Object, ShadowVolatile>() {
+        @Override
+        protected WeakResourceManager<Object, ShadowVolatile> make(final FieldInfo field) {
+            return new WeakResourceManager<Object, ShadowVolatile>() {
 
-				@Override
-				protected ShadowVolatile make(Object obj) {
-					return new ShadowVolatile(obj, field);
-				}
+                @Override
+                protected ShadowVolatile make(Object obj) {
+                    return new ShadowVolatile(obj, field);
+                }
 
-			};
-		}
-	}
+            };
+        }
+    }
 
-	private static ByFieldTable byField = new ByFieldTable();
+    private static ByFieldTable byField = new ByFieldTable();
 
-	/**
-	 * Get the ShadowVolatile for the fd field of the target object.
-	 * 
-	 * @param target
-	 * @param fd
-	 */
-	public static ShadowVolatile get(Object target, FieldInfo fd) {
-		return byField.get(fd).get(target);
+    /**
+     * Get the ShadowVolatile for the fd field of the target object.
+     *
+     * @param target
+     * @param fd
+     */
+    public static ShadowVolatile get(Object target, FieldInfo fd) {
+        return byField.get(fd).get(target);
 
-	}
+    }
 
-	/**
-	 * @RRInternal Used in instrumentor to get the ShadowVolatile, which will be the lock to ensure
-	 *             atomicity of access/event.
-	 */
-	public static ShadowVolatile get(Object target, int fieldAccessId) {
-		FieldAccessInfo fad = MetaDataInfoMaps.getFieldAccesses().get(fieldAccessId);
-		return ShadowVolatile.get(target, fad.getField());
-	}
+    /**
+     * @RRInternal Used in instrumentor to get the ShadowVolatile, which will be the lock to ensure
+     *             atomicity of access/event.
+     */
+    public static ShadowVolatile get(Object target, int fieldAccessId) {
+        FieldAccessInfo fad = MetaDataInfoMaps.getFieldAccesses().get(fieldAccessId);
+        return ShadowVolatile.get(target, fad.getField());
+    }
 
 }

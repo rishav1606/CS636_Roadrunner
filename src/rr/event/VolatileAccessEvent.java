@@ -39,34 +39,34 @@ import rr.state.ShadowVolatile;
 
 public class VolatileAccessEvent extends FieldAccessEvent {
 
-	/**
-	 * The ShadowVolatile associated with the field being accessed. Decorations on
-	 * VollatileVariableStates can be used to store info about volatile accesses.
-	 */
-	protected ShadowVolatile shadow;
+    /**
+     * The ShadowVolatile associated with the field being accessed. Decorations on
+     * VollatileVariableStates can be used to store info about volatile accesses.
+     */
+    protected ShadowVolatile shadow;
 
-	public VolatileAccessEvent(ShadowThread td) {
-		super(td);
-	}
+    public VolatileAccessEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper("V");
-	}
+    @Override
+    public String toString() {
+        return toStringHelper("V");
+    }
 
-	/** @RRInternal */
-	public void setShadowVolatile(ShadowVolatile shadowVolatile) {
-		this.shadow = shadowVolatile;
-	}
+    /** @RRInternal */
+    public void setShadowVolatile(ShadowVolatile shadowVolatile) {
+        this.shadow = shadowVolatile;
+    }
 
-	public ShadowVolatile getShadowVolatile() {
-		return shadow;
-	}
+    public ShadowVolatile getShadowVolatile() {
+        return shadow;
+    }
 
-	/** Returns Kind.VOLATILE */
-	@Override
-	public Kind getKind() {
-		return Kind.VOLATILE;
-	}
+    /** Returns Kind.VOLATILE */
+    @Override
+    public Kind getKind() {
+        return Kind.VOLATILE;
+    }
 
 }

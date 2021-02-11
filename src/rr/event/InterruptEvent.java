@@ -40,35 +40,35 @@ import rr.state.ShadowThread;
  */
 public class InterruptEvent extends Event {
 
-	private ShadowThread interruptedThread;
-	private InterruptInfo info;
+    private ShadowThread interruptedThread;
+    private InterruptInfo info;
 
-	public InterruptEvent(ShadowThread td) {
-		super(td);
-	}
+    public InterruptEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Interrupt(%d,%d)", getThread().getTid(),
-				getInterruptedThread().getTid());
-	}
+    @Override
+    public String toString() {
+        return String.format("Interrupt(%d,%d)", getThread().getTid(),
+                getInterruptedThread().getTid());
+    }
 
-	public ShadowThread getInterruptedThread() {
-		return interruptedThread;
-	}
+    public ShadowThread getInterruptedThread() {
+        return interruptedThread;
+    }
 
-	public InterruptInfo getInfo() {
-		return info;
-	}
+    public InterruptInfo getInfo() {
+        return info;
+    }
 
-	/** @RRInternal */
-	public void setInterruptedThread(ShadowThread interruptedThread) {
-		this.interruptedThread = interruptedThread;
-	}
+    /** @RRInternal */
+    public void setInterruptedThread(ShadowThread interruptedThread) {
+        this.interruptedThread = interruptedThread;
+    }
 
-	/** @RRInternal */
-	public void setInfo(InterruptInfo interruptInfo) {
-		this.info = interruptInfo;
-	}
+    /** @RRInternal */
+    public void setInfo(InterruptInfo interruptInfo) {
+        this.info = interruptInfo;
+    }
 
 }

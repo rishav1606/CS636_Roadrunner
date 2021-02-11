@@ -113,425 +113,425 @@ import rr.state.ShadowVar;
 
 public abstract class Tool {
 
-	private final String name;
-	private final Tool next;
-	private final Tool nextEnter, nextExit, nextAcquire, nextRelease, nextAccess;
+    private final String name;
+    private final Tool next;
+    private final Tool nextEnter, nextExit, nextAcquire, nextRelease, nextAccess;
 
-	private boolean hasReadFPMethod;
-	private boolean hasWriteFPMethod;
+    private boolean hasReadFPMethod;
+    private boolean hasWriteFPMethod;
 
-	/*
-	 * @RRExperimental
-	 */
-	private boolean hasArrayReadFPMethod;
+    /*
+     * @RRExperimental
+     */
+    private boolean hasArrayReadFPMethod;
 
-	/*
-	 * @RRExperimental
-	 */
-	private boolean hasArrayWriteFPMethod;
+    /*
+     * @RRExperimental
+     */
+    private boolean hasArrayWriteFPMethod;
 
-	/*
-	 * @RRExperimental
-	 */
-	private boolean hasFieldReadFPMethod;
+    /*
+     * @RRExperimental
+     */
+    private boolean hasFieldReadFPMethod;
 
-	/*
-	 * @RRExperimental
-	 */
-	private boolean hasFieldWriteFPMethod;
+    /*
+     * @RRExperimental
+     */
+    private boolean hasFieldWriteFPMethod;
 
-	/**
-	 * All tools are created by the RoadRunner infrastructure from the command line, based
-	 * on @Abbrev("...") annotations.
-	 *
-	 * They are constructed prior to processing the items on the command line after the "-tool"
-	 * option.
-	 *
-	 * name -- the print name of the tool
-	 *
-	 * next -- the rest of the tool chain
-	 *
-	 * commandLine -- the command line to which you may add new options
-	 */
-	public Tool(String name, Tool next, CommandLine commandLine) {
-		this.name = name;
-		this.next = next;
+    /**
+     * All tools are created by the RoadRunner infrastructure from the command line, based
+     * on @Abbrev("...") annotations.
+     *
+     * They are constructed prior to processing the items on the command line after the "-tool"
+     * option.
+     *
+     * name -- the print name of the tool
+     *
+     * next -- the rest of the tool chain
+     *
+     * commandLine -- the command line to which you may add new options
+     */
+    public Tool(String name, Tool next, CommandLine commandLine) {
+        this.name = name;
+        this.next = next;
 
-		if (next != null) {
-			nextEnter = next.findFirstImplementor("enter");
-			nextExit = next.findFirstImplementor("exit");
-			nextAcquire = next.findFirstImplementor("acquire");
-			nextRelease = next.findFirstImplementor("release");
-			nextAccess = next.findFirstImplementor("access");
-		} else {
-			nextEnter = nextExit = nextAcquire = nextRelease = nextAccess = null;
-		}
+        if (next != null) {
+            nextEnter = next.findFirstImplementor("enter");
+            nextExit = next.findFirstImplementor("exit");
+            nextAcquire = next.findFirstImplementor("acquire");
+            nextRelease = next.findFirstImplementor("release");
+            nextAccess = next.findFirstImplementor("access");
+        } else {
+            nextEnter = nextExit = nextAcquire = nextRelease = nextAccess = null;
+        }
 
-		hasReadFPMethod = implementsMethod("readFastPath");
-		hasWriteFPMethod = implementsMethod("writeFastPath");
+        hasReadFPMethod = implementsMethod("readFastPath");
+        hasWriteFPMethod = implementsMethod("writeFastPath");
 
-		hasArrayReadFPMethod = implementsMethod("arrayReadFastPath");
-		hasArrayWriteFPMethod = implementsMethod("arrayWriteFastPath");
+        hasArrayReadFPMethod = implementsMethod("arrayReadFastPath");
+        hasArrayWriteFPMethod = implementsMethod("arrayWriteFastPath");
 
-		hasFieldReadFPMethod = implementsMethod("fieldReadFastPath");
-		hasFieldWriteFPMethod = implementsMethod("fieldWriteFastPath");
+        hasFieldReadFPMethod = implementsMethod("fieldReadFastPath");
+        hasFieldWriteFPMethod = implementsMethod("fieldWriteFastPath");
 
-	}
+    }
 
-	/**
-	 * Tool-specific initialization. Called after the entire chain has been constructed but before
-	 * the target generates any events. All command line items will be processed at this point.
-	 */
-	public void init() {
-	}
+    /**
+     * Tool-specific initialization. Called after the entire chain has been constructed but before
+     * the target generates any events. All command line items will be processed at this point.
+     */
+    public void init() {
+    }
 
-	/**
-	 * Tool-specific shutdown. Called when the System is shutting down but before the xml dump
-	 * happens. Be warned: worker threads could still be running and generating events while fini()
-	 * runs.
-	 */
-	public void fini() {
-	}
+    /**
+     * Tool-specific shutdown. Called when the System is shutting down but before the xml dump
+     * happens. Be warned: worker threads could still be running and generating events while fini()
+     * runs.
+     */
+    public void fini() {
+    }
 
-	/**
-	 * Print out tool-specific log info at the end of the run.
-	 */
-	public void printXML(XMLWriter xml) {
-	}
+    /**
+     * Print out tool-specific log info at the end of the run.
+     */
+    public void printXML(XMLWriter xml) {
+    }
 
-	/******************** Event Handlers ******************/
+    /******************** Event Handlers ******************/
 
-	/**
-	 * This method of all tools is called for each thread creation event in the target program.
-	 * Thus, thread creation events are not 'filtered' down the tool chain. By default, this method
-	 * does nothing. <b>You MUST pass this event along</b>
-	 *
-	 */
-	public void create(NewThreadEvent e) {
-		next.create(e);
-	}
+    /**
+     * This method of all tools is called for each thread creation event in the target program.
+     * Thus, thread creation events are not 'filtered' down the tool chain. By default, this method
+     * does nothing. <b>You MUST pass this event along</b>
+     *
+     */
+    public void create(NewThreadEvent e) {
+        next.create(e);
+    }
 
-	/**
-	 * Called for each thread stop event in the target program. <b>You MUST pass this event
-	 * along</b> By default, this method does nothing.
-	 */
-	public void stop(ShadowThread td) {
-		next.stop(td);
-	}
+    /**
+     * Called for each thread stop event in the target program. <b>You MUST pass this event
+     * along</b> By default, this method does nothing.
+     */
+    public void stop(ShadowThread td) {
+        next.stop(td);
+    }
 
-	/**
-	 * Called for each access event (read or write) in the target program. By default, passes the
-	 * event to the next tool in the chain.
-	 */
-	public void access(AccessEvent fae) {
-		nextAccess.access(fae);
-	}
+    /**
+     * Called for each access event (read or write) in the target program. By default, passes the
+     * event to the next tool in the chain.
+     */
+    public void access(AccessEvent fae) {
+        nextAccess.access(fae);
+    }
 
-	/**
-	 * Called for each volatile access event (read or write) in the target program. By default,
-	 * passes the event to the next tool in the chain.
-	 */
-	public void volatileAccess(VolatileAccessEvent fae) {
-		next.volatileAccess(fae);
-	}
+    /**
+     * Called for each volatile access event (read or write) in the target program. By default,
+     * passes the event to the next tool in the chain.
+     */
+    public void volatileAccess(VolatileAccessEvent fae) {
+        next.volatileAccess(fae);
+    }
 
-	/**
-	 * Called for each method enter event in the target program. By default, passes the event to the
-	 * next tool in the chain.
-	 */
-	public void enter(MethodEvent me) {
-		nextEnter.enter(me);
-	}
+    /**
+     * Called for each method enter event in the target program. By default, passes the event to the
+     * next tool in the chain.
+     */
+    public void enter(MethodEvent me) {
+        nextEnter.enter(me);
+    }
 
-	/**
-	 * Called for each method exit event in the target program. By default, passes the event to the
-	 * next tool in the chain.
-	 */
-	public void exit(MethodEvent me) {
-		nextExit.exit(me);
-	}
+    /**
+     * Called for each method exit event in the target program. By default, passes the event to the
+     * next tool in the chain.
+     */
+    public void exit(MethodEvent me) {
+        nextExit.exit(me);
+    }
 
-	/**
-	 * Called for each lock acquire event in the target program. Re-entrant lock acquires are
-	 * filtered out by RoadRunner, and do not cause acquire events. By default, passes the event to
-	 * the next tool in the chain.
-	 */
-	public void acquire(AcquireEvent ae) {
-		nextAcquire.acquire(ae);
-	}
+    /**
+     * Called for each lock acquire event in the target program. Re-entrant lock acquires are
+     * filtered out by RoadRunner, and do not cause acquire events. By default, passes the event to
+     * the next tool in the chain.
+     */
+    public void acquire(AcquireEvent ae) {
+        nextAcquire.acquire(ae);
+    }
 
-	/**
-	 * Called for each lock release event in the target program. Re-entrant lock release are
-	 * filtered out by RoadRunner, and do not cause release events. By default, passes the event to
-	 * the next tool in the chain.
-	 */
-	public void release(ReleaseEvent re) {
-		nextRelease.release(re);
-	}
+    /**
+     * Called for each lock release event in the target program. Re-entrant lock release are
+     * filtered out by RoadRunner, and do not cause release events. By default, passes the event to
+     * the next tool in the chain.
+     */
+    public void release(ReleaseEvent re) {
+        nextRelease.release(re);
+    }
 
-	/**
-	 * @RRExperimental
-	 */
-	public boolean testAcquire(AcquireEvent ae) {
-		return next.testAcquire(ae);
-	}
+    /**
+     * @RRExperimental
+     */
+    public boolean testAcquire(AcquireEvent ae) {
+        return next.testAcquire(ae);
+    }
 
-	/**
-	 * @RRExperimental
-	 */
-	public boolean testRelease(ReleaseEvent re) {
-		return next.testRelease(re);
-	}
+    /**
+     * @RRExperimental
+     */
+    public boolean testRelease(ReleaseEvent re) {
+        return next.testRelease(re);
+    }
 
-	/**
-	 * Called right before each wait operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void preWait(WaitEvent we) {
-		next.preWait(we);
-	}
+    /**
+     * Called right before each wait operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void preWait(WaitEvent we) {
+        next.preWait(we);
+    }
 
-	/**
-	 * Called right after each wait operation of the target program. By default, passes the event to
-	 * the next tool in the chain.
-	 */
-	public void postWait(WaitEvent we) {
-		next.postWait(we);
-	}
+    /**
+     * Called right after each wait operation of the target program. By default, passes the event to
+     * the next tool in the chain.
+     */
+    public void postWait(WaitEvent we) {
+        next.postWait(we);
+    }
 
-	/**
-	 * Called right before each notify operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void preNotify(NotifyEvent ne) {
-		next.preNotify(ne);
-	}
+    /**
+     * Called right before each notify operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void preNotify(NotifyEvent ne) {
+        next.preNotify(ne);
+    }
 
-	/**
-	 * Called right after each notify operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void postNotify(NotifyEvent ne) {
-		next.postNotify(ne);
-	}
+    /**
+     * Called right after each notify operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void postNotify(NotifyEvent ne) {
+        next.postNotify(ne);
+    }
 
-	/**
-	 * Called right before each sleep operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void preSleep(SleepEvent e) {
-		next.preSleep(e);
-	}
+    /**
+     * Called right before each sleep operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void preSleep(SleepEvent e) {
+        next.preSleep(e);
+    }
 
-	/**
-	 * Called right after each sleep operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void postSleep(SleepEvent e) {
-		next.postSleep(e);
-	}
+    /**
+     * Called right after each sleep operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void postSleep(SleepEvent e) {
+        next.postSleep(e);
+    }
 
-	/**
-	 * Called right before each join operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void preJoin(JoinEvent je) {
-		next.preJoin(je);
-	}
+    /**
+     * Called right before each join operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void preJoin(JoinEvent je) {
+        next.preJoin(je);
+    }
 
-	/**
-	 * Called right after each join operation of the target program. By default, passes the event to
-	 * the next tool in the chain.
-	 */
-	public void postJoin(JoinEvent je) {
-		next.postJoin(je);
-	}
+    /**
+     * Called right after each join operation of the target program. By default, passes the event to
+     * the next tool in the chain.
+     */
+    public void postJoin(JoinEvent je) {
+        next.postJoin(je);
+    }
 
-	/**
-	 * Called right before each start operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void preStart(StartEvent se) {
-		next.preStart(se);
-	}
+    /**
+     * Called right before each start operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void preStart(StartEvent se) {
+        next.preStart(se);
+    }
 
-	/**
-	 * Called right after each start operation of the target program. By default, passes the event
-	 * to the next tool in the chain.
-	 */
-	public void postStart(StartEvent se) {
-		next.postStart(se);
-	}
+    /**
+     * Called right after each start operation of the target program. By default, passes the event
+     * to the next tool in the chain.
+     */
+    public void postStart(StartEvent se) {
+        next.postStart(se);
+    }
 
-	/**
-	 * Called right before a thread invokes interrupt. By default, passes the event to the next tool
-	 * in the chain.
-	 */
-	public void preInterrupt(InterruptEvent me) {
-		next.preInterrupt(me);
-	}
+    /**
+     * Called right before a thread invokes interrupt. By default, passes the event to the next tool
+     * in the chain.
+     */
+    public void preInterrupt(InterruptEvent me) {
+        next.preInterrupt(me);
+    }
 
-	/**
-	 * Called when a thread recognizes it was interrupted (because it caught an interrupted
-	 * exception, or because it tests interrupted() and gets true back).
-	 */
-	public void interrupted(InterruptedEvent e) {
-		next.interrupted(e);
-	}
+    /**
+     * Called when a thread recognizes it was interrupted (because it caught an interrupted
+     * exception, or because it tests interrupted() and gets true back).
+     */
+    public void interrupted(InterruptedEvent e) {
+        next.interrupted(e);
+    }
 
-	/**
-	 * Called right after the static fields of a class have been initialized. By default, passes the
-	 * event to the next tool in the chain.
-	 */
-	public void classInitialized(ClassInitializedEvent e) {
-		next.classInitialized(e);
-	}
+    /**
+     * Called right after the static fields of a class have been initialized. By default, passes the
+     * event to the next tool in the chain.
+     */
+    public void classInitialized(ClassInitializedEvent e) {
+        next.classInitialized(e);
+    }
 
-	/**
-	 * Called right before any final static field of a class is read by a thread for the first time.
-	 * This is necessary to ensure a tool can add a synchronizing edges from the initialization of
-	 * final fields to the first uses of those fields in other threads.
-	 */
-	public void classAccessed(ClassAccessedEvent e) {
-		next.classAccessed(e);
-	}
+    /**
+     * Called right before any final static field of a class is read by a thread for the first time.
+     * This is necessary to ensure a tool can add a synchronizing edges from the initialization of
+     * final fields to the first uses of those fields in other threads.
+     */
+    public void classAccessed(ClassAccessedEvent e) {
+        next.classAccessed(e);
+    }
 
-	/**
-	 * Makes a copy of a ShadowVar. Called by RoadRunner as part of its handling of calls to
-	 * "clone()".
-	 */
-	public ShadowVar cloneState(ShadowVar shadowVar) {
-		return next.cloneState(shadowVar);
-	}
+    /**
+     * Makes a copy of a ShadowVar. Called by RoadRunner as part of its handling of calls to
+     * "clone()".
+     */
+    public ShadowVar cloneState(ShadowVar shadowVar) {
+        return next.cloneState(shadowVar);
+    }
 
-	/**
-	 * A tool should should call this method when it no longer cares about the location touched by
-	 * the access event. The ShadowVar will be initialized by the next tool in the chain, and so
-	 * subsequent AccessEvents passed to this tool's access method should then be dispatched to the
-	 * next tool in the chain.
-	 */
-	protected final void advance(AccessEvent ae) {
-		ShadowVar gs = next.makeShadowVar(ae);
-		final boolean result = ae.putShadow(gs);
-		if (!result) {
-			this.access(ae);
-		} else {
-			ae.putOriginalShadow(gs);
-		}
-	}
+    /**
+     * A tool should should call this method when it no longer cares about the location touched by
+     * the access event. The ShadowVar will be initialized by the next tool in the chain, and so
+     * subsequent AccessEvents passed to this tool's access method should then be dispatched to the
+     * next tool in the chain.
+     */
+    protected final void advance(AccessEvent ae) {
+        ShadowVar gs = next.makeShadowVar(ae);
+        final boolean result = ae.putShadow(gs);
+        if (!result) {
+            this.access(ae);
+        } else {
+            ae.putOriginalShadow(gs);
+        }
+    }
 
-	/**
-	 * Return a fresh variable state for this tool for the location being accessed. Will be called
-	 * only once per location per tool, when the previous tool calls advance() to indicate that it
-	 * is no longer interested in owning the location
-	 */
-	public ShadowVar makeShadowVar(AccessEvent ae) {
-		return next.makeShadowVar(ae);
-	}
+    /**
+     * Return a fresh variable state for this tool for the location being accessed. Will be called
+     * only once per location per tool, when the previous tool calls advance() to indicate that it
+     * is no longer interested in owning the location
+     */
+    public ShadowVar makeShadowVar(AccessEvent ae) {
+        return next.makeShadowVar(ae);
+    }
 
-	/** The name of this tool. Used in auto-generated help information. */
-	@Override
-	public String toString() {
-		return name;
-	}
+    /** The name of this tool. Used in auto-generated help information. */
+    @Override
+    public String toString() {
+        return name;
+    }
 
-	/**
-	 * Generates a String representation of the entire tool chain. No need for tools to override.
-	 */
-	public String toChainString() {
-		return toString() + " -> " + next.toChainString();
-	}
+    /**
+     * Generates a String representation of the entire tool chain. No need for tools to override.
+     */
+    public String toChainString() {
+        return toString() + " -> " + next.toChainString();
+    }
 
-	/**
-	 * RoadRunner internal method. "Visitor"-like pattern for tool chains. Applies t.apply(tool) to
-	 * each tool in the chain.
-	 */
-	public void accept(ToolVisitor t) {
-		t.apply(this);
-		if (next != null) {
-			next.accept(t);
-		}
-	}
+    /**
+     * RoadRunner internal method. "Visitor"-like pattern for tool chains. Applies t.apply(tool) to
+     * each tool in the chain.
+     */
+    public void accept(ToolVisitor t) {
+        t.apply(this);
+        if (next != null) {
+            next.accept(t);
+        }
+    }
 
-	private boolean implementsMethod(String methodName) {
-		for (Class<?> c = this.getClass(); c != Tool.class; c = c.getSuperclass()) {
-			for (Method m : c.getDeclaredMethods()) {
-				if (m.getName().equals(methodName)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    private boolean implementsMethod(String methodName) {
+        for (Class<?> c = this.getClass(); c != Tool.class; c = c.getSuperclass()) {
+            for (Method m : c.getDeclaredMethods()) {
+                if (m.getName().equals(methodName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * @RRInternal
-	 */
-	final Tool findFirstImplementor(String methodName) {
-		return implementsMethod(methodName) ? this : next.findFirstImplementor(methodName);
-	}
+    /**
+     * @RRInternal
+     */
+    final Tool findFirstImplementor(String methodName) {
+        return implementsMethod(methodName) ? this : next.findFirstImplementor(methodName);
+    }
 
-	/**
-	 * @RRInternal
-	 */
-	final List<Tool> findAllImplementors(final String methodName) {
-		final Vector<Tool> v = new Vector<Tool>();
-		this.accept(new ToolVisitor() {
-			public void apply(Tool t) {
-				if (t.implementsMethod(methodName)) {
-					v.add(t);
-				}
-			}
-		});
-		return v;
-	}
+    /**
+     * @RRInternal
+     */
+    final List<Tool> findAllImplementors(final String methodName) {
+        final Vector<Tool> v = new Vector<Tool>();
+        this.accept(new ToolVisitor() {
+            public void apply(Tool t) {
+                if (t.implementsMethod(methodName)) {
+                    v.add(t);
+                }
+            }
+        });
+        return v;
+    }
 
-	/**
-	 * @RRInternal
-	 */
-	public boolean hasFPMethod(boolean isWrite) {
-		return isWrite ? hasWriteFPMethod : hasReadFPMethod;
-	}
+    /**
+     * @RRInternal
+     */
+    public boolean hasFPMethod(boolean isWrite) {
+        return isWrite ? hasWriteFPMethod : hasReadFPMethod;
+    }
 
-	/**
-	 * @RRInternal
-	 */
-	public boolean hasArrayFPMethod(boolean isWrite) {
-		return isWrite ? hasArrayWriteFPMethod : hasArrayReadFPMethod;
-	}
+    /**
+     * @RRInternal
+     */
+    public boolean hasArrayFPMethod(boolean isWrite) {
+        return isWrite ? hasArrayWriteFPMethod : hasArrayReadFPMethod;
+    }
 
-	/**
-	 * @RRInternal
-	 */
-	public boolean hasFieldFPMethod(boolean isWrite) {
-		return isWrite ? hasFieldWriteFPMethod : hasFieldReadFPMethod;
-	}
+    /**
+     * @RRInternal
+     */
+    public boolean hasFieldFPMethod(boolean isWrite) {
+        return isWrite ? hasFieldWriteFPMethod : hasFieldReadFPMethod;
+    }
 
-	/**
-	 * Add a listener to be notified about class meta data as it is loaded by RoadRunner.
-	 */
-	protected final void addMetaDataListener(MetaDataInfoVisitor visitor) {
-		Loader.addListener(visitor);
-	}
+    /**
+     * Add a listener to be notified about class meta data as it is loaded by RoadRunner.
+     */
+    protected final void addMetaDataListener(MetaDataInfoVisitor visitor) {
+        Loader.addListener(visitor);
+    }
 
-	/**
-	 * Create the simplest kind of decoration on ThreadStates. Use the ShadowThread.makeDecoration
-	 * method if you need more control.
-	 */
-	protected final <T extends Serializable> Decoration<ShadowThread, T> makeThreadDecoration(
-			String name, T initial) {
-		return ShadowThread.makeDecoration(name, DecorationFactory.Type.SINGLE,
-				new SingletonValue<ShadowThread, T>(initial));
-	}
+    /**
+     * Create the simplest kind of decoration on ThreadStates. Use the ShadowThread.makeDecoration
+     * method if you need more control.
+     */
+    protected final <T extends Serializable> Decoration<ShadowThread, T> makeThreadDecoration(
+            String name, T initial) {
+        return ShadowThread.makeDecoration(name, DecorationFactory.Type.SINGLE,
+                new SingletonValue<ShadowThread, T>(initial));
+    }
 
-	/**
-	 * Create the simplest kind of decoration on ShadowLocks. Use the ShadowLock.makeDecoration
-	 * method if you need more control.
-	 */
-	protected final <T extends Serializable> Decoration<ShadowLock, T> makeLockDecoration(
-			String name, T initial) {
-		return ShadowLock.makeDecoration(name, DecorationFactory.Type.SINGLE,
-				new SingletonValue<ShadowLock, T>(initial));
-	}
+    /**
+     * Create the simplest kind of decoration on ShadowLocks. Use the ShadowLock.makeDecoration
+     * method if you need more control.
+     */
+    protected final <T extends Serializable> Decoration<ShadowLock, T> makeLockDecoration(
+            String name, T initial) {
+        return ShadowLock.makeDecoration(name, DecorationFactory.Type.SINGLE,
+                new SingletonValue<ShadowLock, T>(initial));
+    }
 
 }

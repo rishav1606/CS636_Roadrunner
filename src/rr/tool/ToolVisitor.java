@@ -34,6 +34,6 @@ package rr.tool;
 
 public interface ToolVisitor {
 
-  public void apply(Tool t);
+    public void apply(Tool t);
 
 }

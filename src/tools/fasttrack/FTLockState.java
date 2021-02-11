@@ -38,23 +38,23 @@ import tools.util.VectorClock;
 
 public class FTLockState extends VectorClock {
 
-	// inherited values field: protected by peer.getLock().
-	// That lock will be held during acquire/release/wait events.
+    // inherited values field: protected by peer.getLock().
+    // That lock will be held during acquire/release/wait events.
 
-	private final ShadowLock peer;
+    private final ShadowLock peer;
 
-	public FTLockState(ShadowLock peer, int size) {
-		super(size);
-		this.peer = peer;
-	}
+    public FTLockState(ShadowLock peer, int size) {
+        super(size);
+        this.peer = peer;
+    }
 
-	public ShadowLock getPeer() {
-		return peer;
-	}
+    public ShadowLock getPeer() {
+        return peer;
+    }
 
-	@Override
-	public synchronized String toString() {
-		return String.format("[peer %s: %s]", Util.objectToIdentityString(peer), super.toString());
-	}
+    @Override
+    public synchronized String toString() {
+        return String.format("[peer %s: %s]", Util.objectToIdentityString(peer), super.toString());
+    }
 
 }

@@ -36,50 +36,50 @@ import acme.util.decorations.Decoratable;
 
 public abstract class MetaDataInfo extends Decoratable {
 
-	protected final int id;
-	protected SourceLocation loc;
-	protected String key;
+    protected final int id;
+    protected SourceLocation loc;
+    protected String key;
 
-	public MetaDataInfo(int id, SourceLocation loc) {
-		this.id = id;
-		this.loc = loc;
-	}
+    public MetaDataInfo(int id, SourceLocation loc) {
+        this.id = id;
+        this.loc = loc;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public SourceLocation getLoc() {
-		return loc;
-	}
+    public SourceLocation getLoc() {
+        return loc;
+    }
 
-	public void setLoc(SourceLocation loc) {
-		this.loc = loc;
-	}
+    public void setLoc(SourceLocation loc) {
+        this.loc = loc;
+    }
 
-	public String accessViaSource() {
-		return "MetaDataInfoMaps.get" + this.getClass().getSimpleName() + "(" + this.computeKey()
-				+ ")";
-	}
+    public String accessViaSource() {
+        return "MetaDataInfoMaps.get" + this.getClass().getSimpleName() + "(" + this.computeKey()
+                + ")";
+    }
 
-	@Override
-	public String toString() {
-		return getKey();
-	}
+    @Override
+    public String toString() {
+        return getKey();
+    }
 
-	protected abstract String computeKey();
+    protected abstract String computeKey();
 
-	public final String getKey() {
-		if (key == null) {
-			key = computeKey();
-		}
-		return key;
-	}
+    public final String getKey() {
+        if (key == null) {
+            key = computeKey();
+        }
+        return key;
+    }
 
-	public abstract void accept(MetaDataInfoVisitor v);
+    public abstract void accept(MetaDataInfoVisitor v);
 
-	public int compareTo(MetaDataInfo other) {
-		return getKey().compareTo(other.getKey());
-	}
+    public int compareTo(MetaDataInfo other) {
+        return getKey().compareTo(other.getKey());
+    }
 
 }

@@ -34,49 +34,49 @@ package rr.state;
 
 public final class CoarseArrayState extends AbstractArrayState {
 
-	protected ShadowVar shadowVar;
-	protected final AbstractArrayState[] nextDimension;
+    protected ShadowVar shadowVar;
+    protected final AbstractArrayState[] nextDimension;
 
-	public CoarseArrayState(Object array) {
-		super(array);
-		int n = lengthOf(array);
-		if (array.getClass().getComponentType().isArray()) {
-			nextDimension = new AbstractArrayState[n];
-			Object[] objArray = (Object[]) array;
-			for (int i = 0; i < n; i++) {
-				nextDimension[i] = ArrayStateFactory.make(objArray[i],
-						ArrayStateFactory.ArrayMode.COARSE, false);
-			}
-		} else {
-			nextDimension = null;
-		}
-	}
+    public CoarseArrayState(Object array) {
+        super(array);
+        int n = lengthOf(array);
+        if (array.getClass().getComponentType().isArray()) {
+            nextDimension = new AbstractArrayState[n];
+            Object[] objArray = (Object[]) array;
+            for (int i = 0; i < n; i++) {
+                nextDimension[i] = ArrayStateFactory.make(objArray[i],
+                        ArrayStateFactory.ArrayMode.COARSE, false);
+            }
+        } else {
+            nextDimension = null;
+        }
+    }
 
-	@Override
-	public AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i) {
-		if (element != nextDimension[i].getArray()) {
-			// Yikes.yikes("Stale array entry for next dim");
-			nextDimension[i] = td.arrayStateFactory.get(element);
-		}
-		return nextDimension[i];
-	}
+    @Override
+    public AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i) {
+        if (element != nextDimension[i].getArray()) {
+            // Yikes.yikes("Stale array entry for next dim");
+            nextDimension[i] = td.arrayStateFactory.get(element);
+        }
+        return nextDimension[i];
+    }
 
-	@Override
-	public void setShadowForNextDim(int i, AbstractArrayState s) {
-		nextDimension[i] = s;
-	}
+    @Override
+    public void setShadowForNextDim(int i, AbstractArrayState s) {
+        nextDimension[i] = s;
+    }
 
-	@Override
-	public final ShadowVar getState(int index) {
-		return shadowVar;
-	}
+    @Override
+    public final ShadowVar getState(int index) {
+        return shadowVar;
+    }
 
-	@Override
-	public final boolean putState(int index, ShadowVar expected, ShadowVar v) {
-		if (shadowVar != expected)
-			return false;
-		shadowVar = v;
-		return true;
-	}
+    @Override
+    public final boolean putState(int index, ShadowVar expected, ShadowVar v) {
+        if (shadowVar != expected)
+            return false;
+        shadowVar = v;
+        return true;
+    }
 
 }

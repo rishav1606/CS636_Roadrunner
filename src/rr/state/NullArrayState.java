@@ -36,37 +36,37 @@ import acme.util.Assert;
 
 public final class NullArrayState extends AbstractArrayState {
 
-	private static final Object placeHolder = new Object();
+    private static final Object placeHolder = new Object();
 
-	public NullArrayState() {
-		super(placeHolder);
-	}
+    public NullArrayState() {
+        super(placeHolder);
+    }
 
-	@Override
-	public ShadowVar getState(int in) {
-		Assert.panic("Null Array!");
-		return null;
-	}
+    @Override
+    public ShadowVar getState(int in) {
+        Assert.panic("Null Array!");
+        return null;
+    }
 
-	public void setState(ShadowVar state) {
-		Assert.panic("Null Array!");
-	}
+    public void setState(ShadowVar state) {
+        Assert.panic("Null Array!");
+    }
 
-	@Override
-	public AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i) {
-		Assert.panic("Null Array!");
-		return this;
-	}
+    @Override
+    public AbstractArrayState getShadowForNextDim(ShadowThread td, Object element, int i) {
+        Assert.panic("Null Array!");
+        return this;
+    }
 
-	@Override
-	public void setShadowForNextDim(int i, AbstractArrayState s) {
-		Assert.panic("Null Array!");
-	}
+    @Override
+    public void setShadowForNextDim(int i, AbstractArrayState s) {
+        Assert.panic("Null Array!");
+    }
 
-	@Override
-	public boolean putState(int index, ShadowVar expected, ShadowVar v) {
-		Assert.panic("Null Array!");
-		return false;
-	}
+    @Override
+    public boolean putState(int index, ShadowVar expected, ShadowVar v) {
+        Assert.panic("Null Array!");
+        return false;
+    }
 
 }

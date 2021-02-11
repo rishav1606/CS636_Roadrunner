@@ -37,17 +37,17 @@ import tools.old.util.CV;
 
 public class FastTrackVolatileData {
 
-	public final ShadowVolatile peer;
-	public CV cv;
+    public final ShadowVolatile peer;
+    public CV cv;
 
-	public FastTrackVolatileData(ShadowVolatile ld) {
-		this.peer = ld;
-		this.cv = new CV(FastTrackTool.INIT_CV_SIZE);
-	}
+    public FastTrackVolatileData(ShadowVolatile ld) {
+        this.peer = ld;
+        this.cv = new CV(FastTrackTool.INIT_CV_SIZE);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("[CV=%s]", cv);
-	}
+    @Override
+    public String toString() {
+        return String.format("[CV=%s]", cv);
+    }
 
 }

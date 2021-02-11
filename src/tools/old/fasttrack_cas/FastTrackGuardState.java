@@ -51,76 +51,76 @@ import tools.util.EpochPair;
 
 public class FastTrackGuardState extends CV implements ShadowVar {
 
-	protected volatile long wrEpochs;
+    protected volatile long wrEpochs;
 
-	public FastTrackGuardState() {
-		super(0);
-	}
+    public FastTrackGuardState() {
+        super(0);
+    }
 
-	public FastTrackGuardState(boolean isWrite, int epoch) {
-		super(0);
-		init(isWrite, epoch);
-	}
+    public FastTrackGuardState(boolean isWrite, int epoch) {
+        super(0);
+        init(isWrite, epoch);
+    }
 
-	public FastTrackGuardState(CV cv, long epochs) {
-		super(cv);
-		this.wrEpochs = epochs;
-	}
+    public FastTrackGuardState(CV cv, long epochs) {
+        super(cv);
+        this.wrEpochs = epochs;
+    }
 
-	public void init(boolean isWrite, int epoch) {
-		if (isWrite) {
-			setWREpochs(EpochPair.make(epoch, Epoch.ZERO));
-		} else {
-			setWREpochs(EpochPair.make(Epoch.ZERO, epoch));
-		}
-	}
+    public void init(boolean isWrite, int epoch) {
+        if (isWrite) {
+            setWREpochs(EpochPair.make(epoch, Epoch.ZERO));
+        } else {
+            setWREpochs(EpochPair.make(Epoch.ZERO, epoch));
+        }
+    }
 
-	@Override
-	public void makeCV(int i) {
-		super.makeCV(i);
-	}
+    @Override
+    public void makeCV(int i) {
+        super.makeCV(i);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("[W=%s R=%s CV=%s]", Epoch.toString(getLastWrite()),
-				Epoch.toString(getLastRead()), a == null ? "null" : super.toString());
-	}
+    @Override
+    public String toString() {
+        return String.format("[W=%s R=%s CV=%s]", Epoch.toString(getLastWrite()),
+                Epoch.toString(getLastRead()), a == null ? "null" : super.toString());
+    }
 
-	protected int/* epoch */ getLastWrite() {
-		return EpochPair.write(getWREpochs());
-	}
+    protected int/* epoch */ getLastWrite() {
+        return EpochPair.write(getWREpochs());
+    }
 
-	protected int/* epoch */ getLastRead() {
-		return EpochPair.read(getWREpochs());
-	}
+    protected int/* epoch */ getLastRead() {
+        return EpochPair.read(getWREpochs());
+    }
 
-	public boolean cas(long expected, int write, int read) {
-		final boolean b = unsafe.compareAndSwapLong(this, epochsOffset, expected,
-				EpochPair.make(write, read));
-		if (!b)
-			Yikes.yikes("Atomic updated failed.");
-		return b;
-	}
+    public boolean cas(long expected, int write, int read) {
+        final boolean b = unsafe.compareAndSwapLong(this, epochsOffset, expected,
+                EpochPair.make(write, read));
+        if (!b)
+            Yikes.yikes("Atomic updated failed.");
+        return b;
+    }
 
-	public long getWREpochs() {
-		return wrEpochs;
-	}
+    public long getWREpochs() {
+        return wrEpochs;
+    }
 
-	public void setWREpochs(long wrEpochs) {
-		this.wrEpochs = wrEpochs;
-	}
+    public void setWREpochs(long wrEpochs) {
+        this.wrEpochs = wrEpochs;
+    }
 
-	// setup to use Unsafe.compareAndSwapLong for updates
-	private static final Unsafe unsafe = Unsafe.getUnsafe();
-	private static final long epochsOffset;
+    // setup to use Unsafe.compareAndSwapLong for updates
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
+    private static final long epochsOffset;
 
-	static {
-		try {
-			epochsOffset = unsafe
-					.objectFieldOffset(FastTrackGuardState.class.getDeclaredField("wrEpochs"));
-		} catch (Exception ex) {
-			throw new Error(ex);
-		}
-	}
+    static {
+        try {
+            epochsOffset = unsafe
+                    .objectFieldOffset(FastTrackGuardState.class.getDeclaredField("wrEpochs"));
+        } catch (Exception ex) {
+            throw new Error(ex);
+        }
+    }
 
 }

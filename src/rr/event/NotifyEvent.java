@@ -39,37 +39,37 @@ import rr.state.ShadowThread;
 /** Represents a call to Object.notify() or Object.notifyAll() in the target program. */
 public class NotifyEvent extends Event {
 
-	/** The lock being notified. */
-	protected ShadowLock lock;
+    /** The lock being notified. */
+    protected ShadowLock lock;
 
-	/** True for a call or notifyAll(), false for a call to notify(). */
-	protected boolean notifyAll;
+    /** True for a call or notifyAll(), false for a call to notify(). */
+    protected boolean notifyAll;
 
-	public NotifyEvent(ShadowThread td) {
-		super(td);
-	}
+    public NotifyEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Notify(%d,%s,%b)", getThread().getTid(),
-				Util.objectToIdentityString(getLock().getLock()), isNotifyAll());
-	}
+    @Override
+    public String toString() {
+        return String.format("Notify(%d,%s,%b)", getThread().getTid(),
+                Util.objectToIdentityString(getLock().getLock()), isNotifyAll());
+    }
 
-	/** @RRInternal */
-	public void setLock(ShadowLock shadowLock) {
-		this.lock = shadowLock;
-	}
+    /** @RRInternal */
+    public void setLock(ShadowLock shadowLock) {
+        this.lock = shadowLock;
+    }
 
-	public ShadowLock getLock() {
-		return lock;
-	}
+    public ShadowLock getLock() {
+        return lock;
+    }
 
-	/** @RRInternal */
-	public void setNotifyAll(boolean notifyAll) {
-		this.notifyAll = notifyAll;
-	}
+    /** @RRInternal */
+    public void setNotifyAll(boolean notifyAll) {
+        this.notifyAll = notifyAll;
+    }
 
-	public boolean isNotifyAll() {
-		return notifyAll;
-	}
+    public boolean isNotifyAll() {
+        return notifyAll;
+    }
 }

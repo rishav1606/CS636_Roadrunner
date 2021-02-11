@@ -38,36 +38,36 @@ import tools.util.Epoch;
 
 public class FastTrackGuardState extends CV implements ShadowVar {
 
-	public volatile int/* epoch */ lastWrite;
-	public volatile int/* epoch */ lastRead;
+    public volatile int/* epoch */ lastWrite;
+    public volatile int/* epoch */ lastRead;
 
-	public FastTrackGuardState() {
-		super(0);
-	}
+    public FastTrackGuardState() {
+        super(0);
+    }
 
-	public FastTrackGuardState(boolean isWrite, int epoch) {
-		super(0);
-		init(isWrite, epoch);
-	}
+    public FastTrackGuardState(boolean isWrite, int epoch) {
+        super(0);
+        init(isWrite, epoch);
+    }
 
-	public void init(boolean isWrite, int epoch) {
-		if (isWrite) {
-			lastRead = Epoch.ZERO;
-			lastWrite = epoch;
-		} else {
-			lastWrite = Epoch.ZERO;
-			lastRead = epoch;
-		}
-	}
+    public void init(boolean isWrite, int epoch) {
+        if (isWrite) {
+            lastRead = Epoch.ZERO;
+            lastWrite = epoch;
+        } else {
+            lastWrite = Epoch.ZERO;
+            lastRead = epoch;
+        }
+    }
 
-	@Override
-	public void makeCV(int i) {
-		super.makeCV(i);
-	}
+    @Override
+    public void makeCV(int i) {
+        super.makeCV(i);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("[W=%s R=%s CV=%s]", Epoch.toString(lastWrite),
-				Epoch.toString(lastRead), a == null ? "null" : super.toString());
-	}
+    @Override
+    public String toString() {
+        return String.format("[W=%s R=%s CV=%s]", Epoch.toString(lastWrite),
+                Epoch.toString(lastRead), a == null ? "null" : super.toString());
+    }
 }

@@ -32,35 +32,33 @@
 
 package tools.util;
 
-import rr.state.ShadowThread;
-
 /*
  * A pair of epochs encoded as a long.
  */
 
 public final class EpochPair {
 
-	public static final long make(int write, int read) {
-		return (((long) write) << 32) | (((long) read) & 0xFFFFFFFFL);
-	}
+    public static final long make(int write, int read) {
+        return (((long) write) << 32) | (((long) read) & 0xFFFFFFFFL);
+    }
 
-	public static final int write(long pair) {
-		return (int) (pair >>> 32);
-	}
+    public static final int write(long pair) {
+        return (int) (pair >>> 32);
+    }
 
-	public static final int read(long pair) {
-		return (int) (pair & 0xFFFFFFFFL);
-	}
+    public static final int read(long pair) {
+        return (int) (pair & 0xFFFFFFFFL);
+    }
 
-	public static String toString(long pair) {
-		System.out.printf("%X\n", pair);
-		return "(W=" + Epoch.toString(write(pair)) + ",R=" + Epoch.toString(read(pair));
-	}
+    public static String toString(long pair) {
+        System.out.printf("%X\n", pair);
+        return "(W=" + Epoch.toString(write(pair)) + ",R=" + Epoch.toString(read(pair));
+    }
 
-	public static void main(String args[]) {
-		int e1 = Epoch.make(255, 111);
-		int e2 = Epoch.make(2, 111);
-		System.out.println(EpochPair.toString(EpochPair.make(e1, e2)));
-	}
+    public static void main(String args[]) {
+        int e1 = Epoch.make(255, 111);
+        int e2 = Epoch.make(2, 111);
+        System.out.println(EpochPair.toString(EpochPair.make(e1, e2)));
+    }
 
 }

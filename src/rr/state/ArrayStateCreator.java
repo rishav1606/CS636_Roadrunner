@@ -33,13 +33,13 @@
 package rr.state;
 
 public abstract class ArrayStateCreator {
-  public abstract AbstractArrayState make(Object o);
+    public abstract AbstractArrayState make(Object o);
 
-  public static ArrayStateCreator defaultCreator() {
-    return new ArrayStateCreator() {
-      public AbstractArrayState make(Object o) {
-        return new FineArrayState(o);
-      }
-    };
-  }
+    public static ArrayStateCreator defaultCreator() {
+        return new ArrayStateCreator() {
+            public AbstractArrayState make(Object o) {
+                return new FineArrayState(o);
+            }
+        };
+    }
 }

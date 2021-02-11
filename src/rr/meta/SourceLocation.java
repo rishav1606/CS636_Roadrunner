@@ -34,88 +34,89 @@ package rr.meta;
 
 import java.io.Serializable;
 
+// CS636: Changes to support site information
 public class SourceLocation implements Serializable, Comparable<SourceLocation> {
 
-	public static final SourceLocation NULL = new SourceLocation("?", null, -1, -1);
+    public static final SourceLocation NULL = new SourceLocation("?", null, -1, -1);
 
-	protected final String file;
-	protected final MethodInfo method;
-	protected final int line;
-	protected final int offset;
+    protected final String file;
+    protected final MethodInfo method;
+    protected final int line;
+    protected final int offset;
 
-	// CS636: Added method info from Vindicator project
-	public SourceLocation(String file, MethodInfo method, int line, int offset) {
-		this.file = file;
-		this.method = method;
-		this.line = line;
-		this.offset = offset;
-	}
+    // CS636: Added method info from Vindicator project
+    public SourceLocation(String file, MethodInfo method, int line, int offset) {
+        this.file = file;
+        this.method = method;
+        this.line = line;
+        this.offset = offset;
+    }
 
-	/*
-	 * private SourceLocation(String file, int line) { this(file, line, -1); }
-	 */
+    /*
+     * private SourceLocation(String file, int line) { this(file, line, -1); }
+     */
 
-	@Override
-	public String toString() {
-		return (this == NULL ? "NullLoc"
-				: method + " (" + file.substring(file.lastIndexOf('/') + 1) + "):" + line
-						+ (offset > -1 ? ":" + offset : "")).intern();
-	}
+    @Override
+    public String toString() {
+        return (this == NULL ? "NullLoc"
+                : method + " (" + file.substring(file.lastIndexOf('/') + 1) + "):" + line
+                        + (offset > -1 ? ":" + offset : "")).intern();
+    }
 
-	public static String toKeyString(String file, int line, int offset) {
-		return (file + ":" + line + (offset == -1 ? "" : ":" + offset)).intern();
-	}
+    public static String toKeyString(String file, int line, int offset) {
+        return (file + ":" + line + (offset == -1 ? "" : ":" + offset)).intern();
+    }
 
-	public static String toKeyString(String file, int line) {
-		return toKeyString(file, line, -1);
-	}
+    public static String toKeyString(String file, int line) {
+        return toKeyString(file, line, -1);
+    }
 
-	public String getKey() {
-		return toKeyString(file, line, offset);
-	}
+    public String getKey() {
+        return toKeyString(file, line, offset);
+    }
 
-	public String getFile() {
-		return file;
-	}
+    public String getFile() {
+        return file;
+    }
 
-	public MethodInfo getMethod() {
-		return method;
-	}
+    public MethodInfo getMethod() {
+        return method;
+    }
 
-	public int getLine() {
-		return line;
-	}
+    public int getLine() {
+        return line;
+    }
 
-	public int getOffset() {
-		return offset;
-	}
+    public int getOffset() {
+        return offset;
+    }
 
-	public int compareTo(SourceLocation loc) {
-		int x = file.compareTo(loc.file);
-		if (x == 0)
-			x = method.compareTo(loc.method);
-		if (x == 0)
-			x = line - loc.line;
-		if (x == 0)
-			x = offset - loc.offset;
-		return x;
-	}
+    public int compareTo(SourceLocation loc) {
+        int x = file.compareTo(loc.file);
+        if (x == 0)
+            x = method.compareTo(loc.method);
+        if (x == 0)
+            x = line - loc.line;
+        if (x == 0)
+            x = offset - loc.offset;
+        return x;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
-		result = prime * result + ((method == null) ? 0 : method.hashCode());
-		result = prime * result + line;
-		result = prime * result + offset;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((file == null) ? 0 : file.hashCode());
+        result = prime * result + ((method == null) ? 0 : method.hashCode());
+        result = prime * result + line;
+        result = prime * result + offset;
 
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		return this.compareTo((SourceLocation) obj) == 0;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        return this.compareTo((SourceLocation) obj) == 0;
+    }
 
 }

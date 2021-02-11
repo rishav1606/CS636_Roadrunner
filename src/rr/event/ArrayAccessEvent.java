@@ -44,108 +44,108 @@ import rr.state.update.AbstractArrayUpdater;
 /** An Event representing an array access (read or write) operation of the target program. */
 public class ArrayAccessEvent extends AccessEvent {
 
-	/** The index of the array access. */
-	protected int index;
+    /** The index of the array access. */
+    protected int index;
 
-	/** Information about the syntactic array access operation in the target. */
-	protected ArrayAccessInfo info;
+    /** Information about the syntactic array access operation in the target. */
+    protected ArrayAccessInfo info;
 
-	/** @RRInternal */
-	protected AbstractArrayState arrayState;
+    /** @RRInternal */
+    protected AbstractArrayState arrayState;
 
-	/** @RRInternal */
-	protected AbstractArrayUpdater updater;
+    /** @RRInternal */
+    protected AbstractArrayUpdater updater;
 
-	/**
-	 * Called by RoadRunner to create an ArrayAccessEvent that will be re-used for all array
-	 * accesses by thread td.
-	 */
-	public ArrayAccessEvent(ShadowThread td) {
-		super(td);
-		setUpdater(td.arrayUpdater);
-	}
+    /**
+     * Called by RoadRunner to create an ArrayAccessEvent that will be re-used for all array
+     * accesses by thread td.
+     */
+    public ArrayAccessEvent(ShadowThread td) {
+        super(td);
+        setUpdater(td.arrayUpdater);
+    }
 
-	@Override
-	public String toString() {
-		if (!oldValue.isEmpty()) {
-			if (isWrite) {
-				return String.format("AWr(%d,%s[%d])[%s -> %s]", getThread().getTid(),
-						Util.objectToIdentityString(target), getIndex(), oldValue, newValue);
-			} else {
-				return String.format("ARd(%d,%s[%d])[%s]", getThread().getTid(),
-						Util.objectToIdentityString(target), getIndex(), oldValue, newValue);
-			}
-		} else {
-			return String.format("%s(%d,%s[%d])", this.isWrite ? "AWr" : "ARd",
-					getThread().getTid(), Util.objectToIdentityString(target), getIndex());
-		}
-	}
+    @Override
+    public String toString() {
+        if (!oldValue.isEmpty()) {
+            if (isWrite) {
+                return String.format("AWr(%d,%s[%d])[%s -> %s]", getThread().getTid(),
+                        Util.objectToIdentityString(target), getIndex(), oldValue, newValue);
+            } else {
+                return String.format("ARd(%d,%s[%d])[%s]", getThread().getTid(),
+                        Util.objectToIdentityString(target), getIndex(), oldValue, newValue);
+            }
+        } else {
+            return String.format("%s(%d,%s[%d])", this.isWrite ? "AWr" : "ARd",
+                    getThread().getTid(), Util.objectToIdentityString(target), getIndex());
+        }
+    }
 
-	@Override
-	public final boolean putShadow(ShadowVar newGS) {
-		boolean b = updater.putState(arrayState, getIndex(), this.getOriginalShadow(), newGS);
-		if (!b) {
-			if (this.getShadow() == newGS)
-				return true; // optimize redundant update
-			Yikes.yikes("Bad Update");
-			this.originalShadow = getShadow();
-			return false;
-		} else {
-			return true;
-		}
-	}
+    @Override
+    public final boolean putShadow(ShadowVar newGS) {
+        boolean b = updater.putState(arrayState, getIndex(), this.getOriginalShadow(), newGS);
+        if (!b) {
+            if (this.getShadow() == newGS)
+                return true; // optimize redundant update
+            Yikes.yikes("Bad Update");
+            this.originalShadow = getShadow();
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-	/** Gets the state of the shadow location corresponding to the accessed array element. */
-	@Override
-	public final ShadowVar getShadow() {
-		return updater.getState(arrayState, getIndex());
-	}
+    /** Gets the state of the shadow location corresponding to the accessed array element. */
+    @Override
+    public final ShadowVar getShadow() {
+        return updater.getState(arrayState, getIndex());
+    }
 
-	@Override
-	public AccessInfo getAccessInfo() {
-		return getInfo();
-	}
+    @Override
+    public AccessInfo getAccessInfo() {
+        return getInfo();
+    }
 
-	/** @RRInternal */
-	public void setIndex(int index) {
-		this.index = index;
-	}
+    /** @RRInternal */
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
-	public int getIndex() {
-		return index;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	/** @RRInternal */
-	public void setInfo(ArrayAccessInfo arrayAccessData) {
-		this.info = arrayAccessData;
-	}
+    /** @RRInternal */
+    public void setInfo(ArrayAccessInfo arrayAccessData) {
+        this.info = arrayAccessData;
+    }
 
-	public ArrayAccessInfo getInfo() {
-		return info;
-	}
+    public ArrayAccessInfo getInfo() {
+        return info;
+    }
 
-	/** @RRInternal */
-	public void setArrayState(AbstractArrayState state) {
-		this.arrayState = state;
-	}
+    /** @RRInternal */
+    public void setArrayState(AbstractArrayState state) {
+        this.arrayState = state;
+    }
 
-	public AbstractArrayState getArrayState() {
-		return this.arrayState;
-	}
+    public AbstractArrayState getArrayState() {
+        return this.arrayState;
+    }
 
-	/** @RRInternal */
-	public void setUpdater(AbstractArrayUpdater updater) {
-		this.updater = updater;
-	}
+    /** @RRInternal */
+    public void setUpdater(AbstractArrayUpdater updater) {
+        this.updater = updater;
+    }
 
-	/** @RRInternal */
-	public AbstractArrayUpdater getUpdater() {
-		return this.updater;
-	}
+    /** @RRInternal */
+    public AbstractArrayUpdater getUpdater() {
+        return this.updater;
+    }
 
-	/** Returns Kind.ARRAY */
-	@Override
-	public Kind getKind() {
-		return Kind.ARRAY;
-	}
+    /** Returns Kind.ARRAY */
+    @Override
+    public Kind getKind() {
+        return Kind.ARRAY;
+    }
 }

@@ -34,25 +34,26 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 #
 # Generates the FastTrack version with long Epochs from
 # the original code.  Also generates the LongVectorClock
 # class from the original VectorClock class.
 #
 
+# CS636: Edited to take care of whitespace
+
 mkdir -p auto/tools/fasttrack_long
 cp src/tools/fasttrack/*.java auto/tools/fasttrack_long/
-sed -i.bak  -e "s/int\/\* epoch \*\//long\/* epoch *\//g" auto/tools/fasttrack_long/*.java
-sed -i.bak  -e "s/VectorClock/LongVectorClock/g" auto/tools/fasttrack_long/*.java
-sed -i.bak  -e "s/Epoch/LongEpoch/g" auto/tools/fasttrack_long/*.java
-sed -i.bak  -e "s/package tools\.fasttrack/package tools.fasttrack_long/g" auto/tools/fasttrack_long/*.java
-sed -i.bak  -e "s/\"FT2\"/\"FT2L\"/g" auto/tools/fasttrack_long/FastTrackTool.java
+sed -i.bak -e "s/int\/\* epoch \*\//long\/* epoch *\//g" auto/tools/fasttrack_long/*.java
+sed -i.bak -e "s/VectorClock/LongVectorClock/g" auto/tools/fasttrack_long/*.java
+sed -i.bak -e "s/Epoch/LongEpoch/g" auto/tools/fasttrack_long/*.java
+sed -i.bak -e "s/package tools\.fasttrack/package tools.fasttrack_long/g" auto/tools/fasttrack_long/*.java
+sed -i.bak -e "s/\"FT2\"/\"FT2L\"/g" auto/tools/fasttrack_long/FastTrackTool.java
 
-for i in `ls auto/tools/fasttrack_long/*.java`; do
+for i in $(ls auto/tools/fasttrack_long/*.java); do
     mv $i tmp.java
-    echo "// AUTO-GENERATED --- DO NOT EDIT DIRECTLY " > $i
-    cat tmp.java >> $i
+    echo "// AUTO-GENERATED --- DO NOT EDIT DIRECTLY " >$i
+    cat tmp.java >>$i
 done
 
 # CS636: Clean cruft
@@ -60,16 +61,16 @@ rm tmp.java
 rm auto/tools/fasttrack_long/*.bak
 
 mkdir -p auto/tools/util
-echo "// AUTO-GENERATED --- DO NOT EDIT DIRECTLY " > auto/tools/util/LongVectorClock.java
-cat src/tools/util/VectorClock.java >> auto/tools/util/LongVectorClock.java
-sed -i.bak  -e "s/int\/\* epoch \*\//long\/* epoch *\//g" auto/tools/util/LongVectorClock.java
-sed -i.bak  -e "s/VectorClock/LongVectorClock/g" auto/tools/util/LongVectorClock.java
-sed -i.bak  -e "s/Epoch/LongEpoch/g" auto/tools/util/LongVectorClock.java
+echo "// AUTO-GENERATED --- DO NOT EDIT DIRECTLY " >auto/tools/util/LongVectorClock.java
+cat src/tools/util/VectorClock.java >>auto/tools/util/LongVectorClock.java
+sed -i.bak -e "s/int\/\* epoch \*\//long\/* epoch *\//g" auto/tools/util/LongVectorClock.java
+sed -i.bak -e "s/VectorClock/LongVectorClock/g" auto/tools/util/LongVectorClock.java
+sed -i.bak -e "s/Epoch/LongEpoch/g" auto/tools/util/LongVectorClock.java
 rm auto/tools/util/*.bak
 
-echo "// AUTO-GENERATED --- DO NOT EDIT DIRECTLY " > auto/tools/util/LongEpoch.java
-cat src/tools/util/Epoch.java >> auto/tools/util/LongEpoch.java
-sed -i.bak  -e "s/int\/\* epoch \*\//long\/* epoch *\//g" auto/tools/util/LongEpoch.java
-sed -i.bak  -e "s/Integer\/\* epoch \*\//Long\/* epoch *\//g" auto/tools/util/LongEpoch.java
-sed -i.bak  -e "s/Epoch/LongEpoch/g" auto/tools/util/LongEpoch.java
+echo "// AUTO-GENERATED --- DO NOT EDIT DIRECTLY " >auto/tools/util/LongEpoch.java
+cat src/tools/util/Epoch.java >>auto/tools/util/LongEpoch.java
+sed -i.bak -e "s/int\/\* epoch \*\//long\/* epoch *\//g" auto/tools/util/LongEpoch.java
+sed -i.bak -e "s/Integer\/\* epoch \*\//Long\/* epoch *\//g" auto/tools/util/LongEpoch.java
+sed -i.bak -e "s/Epoch/LongEpoch/g" auto/tools/util/LongEpoch.java
 rm auto/tools/util/*.bak

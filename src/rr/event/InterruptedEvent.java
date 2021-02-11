@@ -36,23 +36,23 @@ import rr.state.ShadowThread;
 
 public class InterruptedEvent extends Event {
 
-	protected Throwable reason;
+    protected Throwable reason;
 
-	public InterruptedEvent(ShadowThread td) {
-		super(td);
-	}
+    public InterruptedEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Interrupted(%d)", getThread().getTid());
-	}
+    @Override
+    public String toString() {
+        return String.format("Interrupted(%d)", getThread().getTid());
+    }
 
-	public void setReason(Throwable o) {
-		this.reason = o;
-	}
+    public void setReason(Throwable o) {
+        this.reason = o;
+    }
 
-	public Throwable getReason() {
-		return reason;
-	}
+    public Throwable getReason() {
+        return reason;
+    }
 
 }

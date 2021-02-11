@@ -45,30 +45,30 @@ import rr.state.ShadowThread;
  */
 public class Event implements Cloneable {
 
-	/** The thread performing this event. */
-	protected final ShadowThread thread;
+    /** The thread performing this event. */
+    protected final ShadowThread thread;
 
-	public Event(ShadowThread td) {
-		this.thread = td;
-	}
+    public Event(ShadowThread td) {
+        this.thread = td;
+    }
 
-	@Override
-	public String toString() {
-		return String.format("[Event: tid=%d]", getThread().getTid());
-	}
+    @Override
+    public String toString() {
+        return String.format("[Event: tid=%d]", getThread().getTid());
+    }
 
-	@Override
-	public Object clone() {
-		try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			Assert.panic("Can't clone " + this.getClass());
-			return null;
-		}
-	}
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            Assert.panic("Can't clone " + this.getClass());
+            return null;
+        }
+    }
 
-	/** Returns the thread performing this event. */
-	public ShadowThread getThread() {
-		return thread;
-	}
+    /** Returns the thread performing this event. */
+    public ShadowThread getThread() {
+        return thread;
+    }
 }

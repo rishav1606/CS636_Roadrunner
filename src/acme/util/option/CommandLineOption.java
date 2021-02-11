@@ -40,80 +40,80 @@ import acme.util.Strings;
  */
 public abstract class CommandLineOption<T> extends Option<T> {
 
-	/**
-	 * Whether the options is stable or still being developed.
-	 */
-	public enum Kind {
-		STABLE, EXPERIMENTAL, DEPRECATED
-	};
+    /**
+     * Whether the options is stable or still being developed.
+     */
+    public enum Kind {
+        STABLE, EXPERIMENTAL, DEPRECATED
+    };
 
-	/** Does the option require an argument when specified. Ie, -X vs -X=Y. */
-	final protected boolean hasArg;
+    /** Does the option require an argument when specified. Ie, -X vs -X=Y. */
+    final protected boolean hasArg;
 
-	/** String to describe the option */
-	final protected String usage;
+    /** String to describe the option */
+    final protected String usage;
 
-	/** stable or not? */
-	final protected Kind kind;
+    /** stable or not? */
+    final protected Kind kind;
 
-	/** The command line to which the option belongs */
-	protected CommandLine container;
+    /** The command line to which the option belongs */
+    protected CommandLine container;
 
-	public CommandLineOption(String id, T dV, boolean hasArg, Kind kind, String usage) {
-		super(id, dV);
-		this.hasArg = hasArg;
-		this.usage = usage;
-		this.kind = kind;
-	}
+    public CommandLineOption(String id, T dV, boolean hasArg, Kind kind, String usage) {
+        super(id, dV);
+        this.hasArg = hasArg;
+        this.usage = usage;
+        this.kind = kind;
+    }
 
-	protected abstract void apply(String arg);
+    protected abstract void apply(String arg);
 
-	public void checkAndApply(String arg) {
-		if (hasArg && arg == null) {
-			Assert.fail("Command Line Option '%s' requires a value", id);
-		} else if (!hasArg && arg != null) {
-			Assert.fail("Command Line Option '%s' does not take a value", id);
-		} else {
-			if (kind == Kind.DEPRECATED) {
-				Assert.warn("Using Deprecated Option '%s'", id);
-			}
-			apply(arg);
-		}
-	}
+    public void checkAndApply(String arg) {
+        if (hasArg && arg == null) {
+            Assert.fail("Command Line Option '%s' requires a value", id);
+        } else if (!hasArg && arg != null) {
+            Assert.fail("Command Line Option '%s' does not take a value", id);
+        } else {
+            if (kind == Kind.DEPRECATED) {
+                Assert.warn("Using Deprecated Option '%s'", id);
+            }
+            apply(arg);
+        }
+    }
 
-	public boolean hasArg() {
-		return hasArg;
-	}
+    public boolean hasArg() {
+        return hasArg;
+    }
 
-	protected String usage() {
-		return usage + "\n" + "Current Value: " + this.get();
-	}
+    protected String usage() {
+        return usage + "\n" + "Current Value: " + this.get();
+    }
 
-	protected String getType() {
-		T t = this.get();
-		return (t == null ? "NULL" : t.getClass().getSimpleName());
-	}
+    protected String getType() {
+        T t = this.get();
+        return (t == null ? "NULL" : t.getClass().getSimpleName());
+    }
 
-	public String getUsage() {
-		String args = " -" + id;
-		if (hasArg) {
-			args += "={" + getType() + "}";
-		}
-		args = Strings.pad(args, 32, ' ');
-		String prepend = Strings.pad("", 43, ' ');
-		args += (kind == Kind.STABLE ? "STABLE     "
-				: kind == Kind.EXPERIMENTAL ? "UNSTABLE   " : "DEPRECATED ");
-		return String.format("%s%s\n", args, Strings.wordWrap(usage(), 80, "\n", "", prepend));
-	}
+    public String getUsage() {
+        String args = " -" + id;
+        if (hasArg) {
+            args += "={" + getType() + "}";
+        }
+        args = Strings.pad(args, 32, ' ');
+        String prepend = Strings.pad("", 43, ' ');
+        args += (kind == Kind.STABLE ? "STABLE     "
+                : kind == Kind.EXPERIMENTAL ? "UNSTABLE   " : "DEPRECATED ");
+        return String.format("%s%s\n", args, Strings.wordWrap(usage(), 80, "\n", "", prepend));
+    }
 
-	void setCommandLine(CommandLine cl) {
-		if (this.container != null) {
-			Assert.fail("Command Line Option %s already contained in a command line.", this.id);
-		}
-		this.container = cl;
-	}
+    void setCommandLine(CommandLine cl) {
+        if (this.container != null) {
+            Assert.fail("Command Line Option %s already contained in a command line.", this.id);
+        }
+        this.container = cl;
+    }
 
-	public CommandLine getCommandLine() {
-		return container;
-	}
+    public CommandLine getCommandLine() {
+        return container;
+    }
 }

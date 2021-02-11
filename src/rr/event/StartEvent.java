@@ -39,36 +39,36 @@ import rr.state.ShadowThread;
 
 public class StartEvent extends Event {
 
-	/** The thread being started. */
-	protected ShadowThread newThread;
+    /** The thread being started. */
+    protected ShadowThread newThread;
 
-	protected StartInfo info;
+    protected StartInfo info;
 
-	public StartEvent(ShadowThread td) {
-		super(td);
-	}
+    public StartEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Start(%d,%d)", getThread().getTid(), getNewThread().getTid());
-	}
+    @Override
+    public String toString() {
+        return String.format("Start(%d,%d)", getThread().getTid(), getNewThread().getTid());
+    }
 
-	/** @RRInternal */
-	public void setNewThread(ShadowThread newThread) {
-		this.newThread = newThread;
-	}
+    /** @RRInternal */
+    public void setNewThread(ShadowThread newThread) {
+        this.newThread = newThread;
+    }
 
-	public ShadowThread getNewThread() {
-		return newThread;
-	}
+    public ShadowThread getNewThread() {
+        return newThread;
+    }
 
-	/** @RRInternal */
-	public void setInfo(StartInfo info) {
-		this.info = info;
-	}
+    /** @RRInternal */
+    public void setInfo(StartInfo info) {
+        this.info = info;
+    }
 
-	public StartInfo getInfo() {
-		return this.info;
-	}
+    public StartInfo getInfo() {
+        return this.info;
+    }
 
 }

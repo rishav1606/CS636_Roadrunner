@@ -40,38 +40,38 @@ import rr.state.ShadowThread;
 /** An event that represents an acquire operation of the target program. */
 public class AcquireEvent extends Event {
 
-	/** The lock that is being acquired. */
-	protected ShadowLock lock;
+    /** The lock that is being acquired. */
+    protected ShadowLock lock;
 
-	/** Information about this particular syntactic synchronized block. */
-	protected AcquireInfo info;
+    /** Information about this particular syntactic synchronized block. */
+    protected AcquireInfo info;
 
-	public AcquireEvent(ShadowThread td) {
-		super(td);
-	}
+    public AcquireEvent(ShadowThread td) {
+        super(td);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("Acquire(%d,%s)", getThread().getTid(),
-				Util.objectToIdentityString(getLock().getLock()));
-	}
+    @Override
+    public String toString() {
+        return String.format("Acquire(%d,%s)", getThread().getTid(),
+                Util.objectToIdentityString(getLock().getLock()));
+    }
 
-	/** @RRInternal */
-	public void setLock(ShadowLock shadowLock) {
-		this.lock = shadowLock;
-	}
+    /** @RRInternal */
+    public void setLock(ShadowLock shadowLock) {
+        this.lock = shadowLock;
+    }
 
-	public ShadowLock getLock() {
-		return lock;
-	}
+    public ShadowLock getLock() {
+        return lock;
+    }
 
-	/** @RRInternal */
-	public void setInfo(AcquireInfo acquireData) {
-		this.info = acquireData;
-	}
+    /** @RRInternal */
+    public void setInfo(AcquireInfo acquireData) {
+        this.info = acquireData;
+    }
 
-	public AcquireInfo getInfo() {
-		return info;
-	}
+    public AcquireInfo getInfo() {
+        return info;
+    }
 
 }

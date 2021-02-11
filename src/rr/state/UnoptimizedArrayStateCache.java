@@ -39,23 +39,23 @@ import acme.util.identityhash.ConcurrentIdentityHashMap;
  */
 public class UnoptimizedArrayStateCache extends AbstractArrayStateCache {
 
-	static private ConcurrentIdentityHashMap<Object, AbstractArrayState> map = new ConcurrentIdentityHashMap<Object, AbstractArrayState>();
+    static private ConcurrentIdentityHashMap<Object, AbstractArrayState> map = new ConcurrentIdentityHashMap<Object, AbstractArrayState>();
 
-	public UnoptimizedArrayStateCache(String tag, int id) {
-		super(tag, id);
-	}
+    public UnoptimizedArrayStateCache(String tag, int id) {
+        super(tag, id);
+    }
 
-	@Override
-	public AbstractArrayState get(Object array, ShadowThread td) {
-		AbstractArrayState state = map.get(array);
-		if (state == null) {
-			state = td.arrayStateFactory.get(array);
-			map.put(array, state);
-		}
-		return state;
-	}
+    @Override
+    public AbstractArrayState get(Object array, ShadowThread td) {
+        AbstractArrayState state = map.get(array);
+        if (state == null) {
+            state = td.arrayStateFactory.get(array);
+            map.put(array, state);
+        }
+        return state;
+    }
 
-	@Override
-	public void clear(int tid) {
-	}
+    @Override
+    public void clear(int tid) {
+    }
 }

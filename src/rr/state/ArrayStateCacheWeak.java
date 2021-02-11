@@ -38,38 +38,38 @@ import acme.util.Assert;
 
 public class ArrayStateCacheWeak extends AbstractArrayStateCache {
 
-	public final WeakReference<AbstractArrayState> shadowCache[] = new WeakReference[rr.tool.RR.maxTidOption
-			.get()];
+    public final WeakReference<AbstractArrayState> shadowCache[] = new WeakReference[rr.tool.RR.maxTidOption
+            .get()];
 
-	static WeakReference<AbstractArrayState> WEAK_NULL = new WeakReference<AbstractArrayState>(
-			ArrayStateFactory.NULL);
+    static WeakReference<AbstractArrayState> WEAK_NULL = new WeakReference<AbstractArrayState>(
+            ArrayStateFactory.NULL);
 
-	protected ArrayStateCacheWeak(String tag, int id) {
-		super(tag, id);
-		for (int j = 0; j < shadowCache.length; j++) {
-			shadowCache[j] = WEAK_NULL;
-		}
-	}
+    protected ArrayStateCacheWeak(String tag, int id) {
+        super(tag, id);
+        for (int j = 0; j < shadowCache.length; j++) {
+            shadowCache[j] = WEAK_NULL;
+        }
+    }
 
-	@Override
-	public AbstractArrayState get(Object array, ShadowThread td) {
-		try {
-			int n = td.getTid();
-			AbstractArrayState abstractArrayState = this.shadowCache[n].get();
-			if (abstractArrayState != null && abstractArrayState.getArrayNoCheck() == array) {
-				return abstractArrayState;
-			}
+    @Override
+    public AbstractArrayState get(Object array, ShadowThread td) {
+        try {
+            int n = td.getTid();
+            AbstractArrayState abstractArrayState = this.shadowCache[n].get();
+            if (abstractArrayState != null && abstractArrayState.getArrayNoCheck() == array) {
+                return abstractArrayState;
+            }
 
-			AbstractArrayState as = td.arrayStateFactory.get(array);
-			shadowCache[n] = new WeakReference(as);
-			return as;
-		} catch (ArrayIndexOutOfBoundsException e) {
-			Assert.panic("Tid > cache size.  Change w/ -maxTid");
-			return null;
-		}
-	}
+            AbstractArrayState as = td.arrayStateFactory.get(array);
+            shadowCache[n] = new WeakReference(as);
+            return as;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Assert.panic("Tid > cache size.  Change w/ -maxTid");
+            return null;
+        }
+    }
 
-	@Override
-	public void clear(int tid) {
-	}
+    @Override
+    public void clear(int tid) {
+    }
 }
