@@ -221,6 +221,8 @@ public class RRMain {
 
         // CS636: New options group
         cl.addGroup("CS636");
+        cl.add(rr.tool.RR.samplingRateOption);
+        cl.add(rr.tool.RR.samplingSchemeOption);
 
         cl.addGroup("Instrumentor");
         cl.add(noInstrumentOption);

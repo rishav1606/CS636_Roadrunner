@@ -185,6 +185,15 @@ public class RR {
                 }
             });
 
+    public static final CommandLineOption<Integer> samplingRateOption = CommandLine
+            .makeInteger("samplingrate", 100, CommandLineOption.Kind.EXPERIMENTAL,
+            "The sampling rate for FT2S tool (Fastrack with sampling)");
+    
+    public static final CommandLineOption<String> samplingSchemeOption = CommandLine
+            .makeString("samplingscheme", "COUNT", CommandLineOption.Kind.EXPERIMENTAL,
+            "The sampling scheme for FT2S tool (Fastrack with sampling)");
+
+
     public static final StringMatcher toolCode = new StringMatcher(StringMatchResult.REJECT,
             "+acme..*", "+rr..*", "+java..*");
 

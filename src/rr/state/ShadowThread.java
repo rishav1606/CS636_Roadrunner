@@ -115,6 +115,7 @@ public class ShadowThread extends Decoratable implements ShadowVar {
      */
     protected final ShadowThread parent;
 
+
     /**
      * True if the thread has stopped running.
      *
@@ -195,6 +196,7 @@ public class ShadowThread extends Decoratable implements ShadowVar {
         this.tid = tid;
         this.parent = parent;
         this.thread = new WeakReference<Thread>(thread);
+
 
         for (int i = 0; i < blockStack.length; i++) {
             blockStack[i] = new MethodEvent(this);
@@ -480,6 +482,7 @@ public class ShadowThread extends Decoratable implements ShadowVar {
             }
         }
     }
+
 
     public FieldAccessEvent getFieldAccessEvent() {
         return fieldAccessEvent;
